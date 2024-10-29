@@ -9,7 +9,8 @@ import picocli.CommandLine.Command;
         description = "Work with Cucumber messages",
         versionProvider = ManifestVersionProvider.class,
         subcommands = {
-                JunitXmlCommand.class
+                JunitXmlCommand.class,
+                TestngXmlCommand.class
         }
 )
 final class MessagesCli {

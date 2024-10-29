@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results failed="0" passed="1" skipped="0" total="1">
+<suite name="Cucumber" duration-ms="5">
+<test name="Cucumber" duration-ms="5">
+<class name="minimal">
+<test-method name="cukes" status="PASS" duration-ms="3" started-at="1970-01-01T00:00:00.001Z" finished-at="1970-01-01T00:00:00.004Z"/>
+</class>
+</test>
+</suite>
+</testng-results>

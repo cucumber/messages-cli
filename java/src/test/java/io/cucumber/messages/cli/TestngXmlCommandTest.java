@@ -22,10 +22,10 @@ import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class JunitXmlCommandTest {
+class TestngXmlCommandTest {
 
     static final Path minimalFeatureNdjson = Paths.get("../testdata/minimal.feature.ndjson");
-    static final Path minimalFeatureXml = Paths.get("../testdata/junit/minimal.feature.xml");
+    static final Path minimalFeatureXml = Paths.get("../testdata/testng/minimal.feature.xml");
 
     final ByteArrayOutputStream stdOut = new ByteArrayOutputStream();
     final StringWriter stdErr = new StringWriter();
@@ -57,13 +57,13 @@ class JunitXmlCommandTest {
 
     @Test
     void help() {
-        int exitCode = cmd.execute("junit-xml", "--help");
+        int exitCode = cmd.execute("testng-xml", "--help");
         assertThat(exitCode).isZero();
     }
 
     @Test
     void writeToSystemOut() {
-        var exitCode = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson");
+        var exitCode = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
@@ -73,7 +73,7 @@ class JunitXmlCommandTest {
 
     @Test
     void failsToReadNonExistingFile() {
-        var exitCode = cmd.execute("junit-xml", "../testdata/no-such.feature.ndjson");
+        var exitCode = cmd.execute("testng-xml", "../testdata/no-such.feature.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -84,7 +84,7 @@ class JunitXmlCommandTest {
     @Test
     void readsFromSystemIn() throws IOException {
         System.setIn(newInputStream(minimalFeatureNdjson));
-        var exitCode = cmd.execute("junit-xml", "-");
+        var exitCode = cmd.execute("testng-xml", "-");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
@@ -95,7 +95,7 @@ class JunitXmlCommandTest {
     @Test
     void writesToOutputFile() {
         var destination = tmp.resolve("minimal.feature.xml");
-        var exitCode = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
+        var exitCode = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
@@ -105,8 +105,8 @@ class JunitXmlCommandTest {
 
     @Test
     void doesNotOverwriteWhenWritingToDirectory() {
-        var exitCode1 = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
-        var exitCode2 = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
+        var exitCode1 = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
+        var exitCode2 = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
         assertAll(
                 () -> assertThat(exitCode1).isZero(),
                 () -> assertThat(tmp.resolve("minimal.feature.xml")).exists(),
@@ -121,7 +121,7 @@ class JunitXmlCommandTest {
         var isReadOnly = destination.toFile().setReadOnly();
         assertThat(isReadOnly).isTrue();
 
-        var exitCode = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
+        var exitCode = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -135,7 +135,7 @@ class JunitXmlCommandTest {
         var destination = Paths.get("minimal.feature.xml");
         Files.deleteIfExists(destination);
 
-        var exitCode = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output");
+        var exitCode = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
@@ -146,7 +146,7 @@ class JunitXmlCommandTest {
     @Test
     void canNotGuessFileNameWhenReadingFromSystemIn() throws IOException {
         System.setIn(newInputStream(minimalFeatureNdjson));
-        var exitCode = cmd.execute("junit-xml", "-", "--output");
+        var exitCode = cmd.execute("testng-xml", "-", "--output");
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -156,7 +156,7 @@ class JunitXmlCommandTest {
 
     @Test
     void useExampleNamingStrategy() {
-        var exitCode = cmd.execute("junit-xml", "../testdata/examples-tables.feature.ndjson", "--example-naming-strategy", "NUMBER");
+        var exitCode = cmd.execute("testng-xml", "../testdata/examples-tables.feature.ndjson", "--example-naming-strategy", "NUMBER");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
