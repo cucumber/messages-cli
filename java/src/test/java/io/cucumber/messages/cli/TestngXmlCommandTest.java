@@ -141,6 +141,7 @@ class TestngXmlCommandTest {
                 () -> assertThat(readString(destination))
                         .isEqualTo(readString(minimalFeatureXml))
         );
+        Files.deleteIfExists(destination);
     }
 
     @Test

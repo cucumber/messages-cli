@@ -1,6 +1,5 @@
 package io.cucumber.messages.cli;
 
-import io.cucumber.junitxmlformatter.MessagesToJunitXmlWriter;
 import io.cucumber.messages.NdjsonToMessageIterable;
 import io.cucumber.query.NamingStrategy.ExampleName;
 import io.cucumber.testngxmlformatter.MessagesToTestngXmlWriter;
@@ -16,7 +15,7 @@ import java.util.concurrent.Callable;
 
 @Command(
         name = "testng-xml",
-        description = "Converts Cucumber messages to JUnit XML",
+        description = "Converts Cucumber messages to TestNG XML",
         mixinStandardHelpOptions = true
 )
 class TestngXmlCommand implements Callable<Integer> {
@@ -52,8 +51,8 @@ class TestngXmlCommand implements Callable<Integer> {
     )
     private ExampleName exampleNameStrategy;
 
-    private static String xml(String fileName, int counter) {
-        return fileName + "." + counter + ".xml";
+    private static String xml(String fileName) {
+        return fileName + ".xml";
     }
 
     @Override

@@ -51,8 +51,8 @@ class JunitXmlCommand implements Callable<Integer> {
     )
     private ExampleName exampleNameStrategy;
 
-    private static String xml(String fileName, int counter) {
-        return fileName + "." + counter + ".xml";
+    private static String xml(String fileName) {
+        return fileName + ".xml";
     }
 
     @Override

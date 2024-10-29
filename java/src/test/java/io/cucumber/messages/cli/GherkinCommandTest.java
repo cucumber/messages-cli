@@ -22,10 +22,9 @@ import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class JunitXmlCommandTest {
+class GherkinCommandTest {
 
-    static final Path minimalFeatureNdjson = Paths.get("../testdata/minimal.feature.ndjson");
-    static final Path minimalFeatureXml = Paths.get("../testdata/junit/minimal.feature.xml");
+    static final Path minimalFeature = Paths.get("../testdata/minimal.feature");
 
     final ByteArrayOutputStream stdOut = new ByteArrayOutputStream();
     final StringWriter stdErr = new StringWriter();
@@ -57,71 +56,74 @@ class JunitXmlCommandTest {
 
     @Test
     void help() {
-        int exitCode = cmd.execute("junit-xml", "--help");
+        int exitCode = cmd.execute("gherkin", "--help");
         assertThat(exitCode).isZero();
     }
 
     @Test
     void writeToSystemOut() {
-        var exitCode = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson");
+        var exitCode = cmd.execute("gherkin", minimalFeature.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .isEqualTo(readString(minimalFeatureXml))
+                        .hasLineCount(1)
+                        .startsWith("{\"gherkinDocument\":")
         );
     }
 
     @Test
     void failsToReadNonExistingFile() {
-        var exitCode = cmd.execute("junit-xml", "../testdata/no-such.feature.ndjson");
+        var exitCode = cmd.execute("gherkin", "../testdata/no-such.feature");
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
-                        .contains("Invalid argument, could not read '../testdata/no-such.feature.ndjson'")
+                        .contains("Invalid argument, could not read '../testdata/no-such.feature'")
         );
     }
 
     @Test
     void readsFromSystemIn() throws IOException {
-        System.setIn(newInputStream(minimalFeatureNdjson));
-        var exitCode = cmd.execute("junit-xml", "-");
+        System.setIn(newInputStream(minimalFeature));
+        var exitCode = cmd.execute("gherkin", "-");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .isEqualTo(readString(minimalFeatureXml))
+                        .hasLineCount(1)
+                        .startsWith("{\"gherkinDocument\":")
         );
     }
 
     @Test
     void writesToOutputFile() {
-        var destination = tmp.resolve("minimal.feature.xml");
-        var exitCode = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
+        var destination = tmp.resolve("minimal.feature.ndjson");
+        var exitCode = cmd.execute("gherkin", "../testdata/minimal.feature", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .isEqualTo(readString(minimalFeatureXml))
+                        .hasLineCount(1)
+                        .startsWith("{\"gherkinDocument\":")
         );
     }
 
     @Test
     void doesNotOverwriteWhenWritingToDirectory() {
-        var exitCode1 = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
-        var exitCode2 = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
+        var exitCode1 = cmd.execute("gherkin", "../testdata/minimal.feature", "--output", tmp.toString());
+        var exitCode2 = cmd.execute("gherkin", "../testdata/minimal.feature", "--output", tmp.toString());
         assertAll(
                 () -> assertThat(exitCode1).isZero(),
-                () -> assertThat(tmp.resolve("minimal.feature.xml")).exists(),
+                () -> assertThat(tmp.resolve("minimal.ndjson")).exists(),
                 () -> assertThat(exitCode2).isZero(),
-                () -> assertThat(tmp.resolve("minimal.feature.1.xml")).exists()
+                () -> assertThat(tmp.resolve("minimal.1.ndjson")).exists()
         );
     }
 
     @Test
     void failsToWriteToReadOnlyOutputFile() throws IOException {
-        var destination = Files.createFile(tmp.resolve("minimal.feature.xml"));
+        var destination = Files.createFile(tmp.resolve("minimal.feature"));
         var isReadOnly = destination.toFile().setReadOnly();
         assertThat(isReadOnly).isTrue();
 
-        var exitCode = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
+        var exitCode = cmd.execute("gherkin", "../testdata/minimal.feature", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -132,14 +134,15 @@ class JunitXmlCommandTest {
 
     @Test
     void writesFileToCurrentWorkingDirectory() throws IOException {
-        var destination = Paths.get("minimal.feature.xml");
+        var destination = Paths.get("minimal.ndjson");
         Files.deleteIfExists(destination);
 
-        var exitCode = cmd.execute("junit-xml", "../testdata/minimal.feature.ndjson", "--output");
+        var exitCode = cmd.execute("gherkin", "../testdata/minimal.feature", "--output");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .isEqualTo(readString(minimalFeatureXml))
+                        .hasLineCount(1)
+                        .startsWith("{\"gherkinDocument\":")
         );
 
         Files.deleteIfExists(destination);
@@ -147,8 +150,8 @@ class JunitXmlCommandTest {
 
     @Test
     void canNotGuessFileNameWhenReadingFromSystemIn() throws IOException {
-        System.setIn(newInputStream(minimalFeatureNdjson));
-        var exitCode = cmd.execute("junit-xml", "-", "--output");
+        System.setIn(newInputStream(minimalFeature));
+        var exitCode = cmd.execute("gherkin", "-", "--output");
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -157,12 +160,35 @@ class JunitXmlCommandTest {
     }
 
     @Test
-    void useExampleNamingStrategy() {
-        var exitCode = cmd.execute("junit-xml", "../testdata/examples-tables.feature.ndjson", "--example-naming-strategy", "NUMBER");
+    void includeSource() {
+        var exitCode = cmd.execute("gherkin", "--include-source", minimalFeature.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .contains("name=\"Eating cucumbers with &lt;friends&gt; friends - #1.1\"")
+                        .hasLineCount(2)
+                        .startsWith("{\"source\":")
+                        .contains("{\"gherkinDocument\":")
+        );
+    }
+    @Test
+    void includePickles() {
+        var exitCode = cmd.execute("gherkin", "--include-pickles", minimalFeature.toString());
+        assertAll(
+                () -> assertThat(exitCode).isZero(),
+                () -> assertThat(stdOut.toString())
+                        .hasLineCount(2)
+                        .startsWith("{\"gherkinDocument\":")
+                        .contains("{\"pickle\":")
+        );
+    }
+    @Test
+    void excludeDocument() {
+        var exitCode = cmd.execute("gherkin", "--no-include-gherkin-document", "--include-source", minimalFeature.toString());
+        assertAll(
+                () -> assertThat(exitCode).isZero(),
+                () -> assertThat(stdOut.toString())
+                        .hasLineCount(1)
+                        .startsWith("{\"source\":")
         );
     }
 

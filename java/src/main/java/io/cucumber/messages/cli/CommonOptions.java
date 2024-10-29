@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static java.nio.file.Files.newOutputStream;
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -19,10 +19,10 @@ final class CommonOptions {
     private final CommandSpec spec;
     private final Path source;
     private final Path output;
-    private final BiFunction<String, Integer, String> fileNameGenerator;
+    private final Function<String, String> fileNameGenerator;
 
 
-    CommonOptions(CommandSpec spec, Path source, Path output, BiFunction<String, Integer, String> fileNameGenerator) {
+    CommonOptions(CommandSpec spec, Path source, Path output, Function<String, String> fileNameGenerator) {
         this.spec = requireNonNull(spec);
         this.source = requireNonNull(source);
         this.output = output;
@@ -41,7 +41,7 @@ final class CommonOptions {
 
     }
 
-    private boolean isSourceSystemIn() {
+    boolean isSourceSystemIn() {
         var fileName = source.getFileName();
         return fileName != null && fileName.toString().equals("-");
     }
@@ -78,12 +78,12 @@ final class CommonOptions {
         if (index >= 0) {
             fileName = fileName.substring(0, index);
         }
-        var candidate = output.resolve(fileName + ".xml");
+        var candidate = output.resolve(fileNameGenerator.apply(fileName));
 
         // Avoid overwriting existing files when we decided the file name.
         var counter = 1;
         while (Files.exists(candidate)) {
-            candidate = output.resolve(fileNameGenerator.apply(fileName, counter++));
+            candidate = output.resolve(fileNameGenerator.apply(fileName + "." + counter++));
         }
         return candidate;
     }
