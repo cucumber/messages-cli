@@ -6,8 +6,8 @@ import picocli.CommandLine.Command;
 @Command(
         name = "messages",
         mixinStandardHelpOptions = true,
-        description = "Work with Cucumber messages",
-        versionProvider = ManifestVersionProvider.class,
+        headerHeading = "Work with Cucumber messages",
+        versionProvider = VersionProvider.class,
         subcommands = {
                 GherkinCommand.class,
                 JunitXmlCommand.class,

@@ -8,8 +8,8 @@ import picocli.CommandLine;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.regex.Pattern;
 
-import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -48,7 +48,15 @@ class MessagesCliTest {
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(out.toString())
-                        .isEqualToIgnoringNewLines("messages-cli DEVELOPMENT")
+                        .hasLineCount(4)
+                        .matches(Pattern.compile("""
+                                        gherkin \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
+                                        junit-xml-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
+                                        messages-cli \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
+                                        testng-xml-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
+                                        """,
+                                Pattern.MULTILINE
+                        ))
         );
     }
 
