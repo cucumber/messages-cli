@@ -22,7 +22,7 @@
         <project.Automatic-Module-Name>io.cucumber.messages.cli</project.Automatic-Module-Name>
         <junit-xml-formatter.version>0.8.1</junit-xml-formatter.version>
         <testng-xml-formatter.version>0.5.0</testng-xml-formatter.version>
-        <gherkin.version>34.0.0</gherkin.version>
+        <gherkin.version>35.0.0</gherkin.version>
     </properties>
 
     <scm>
