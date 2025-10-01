@@ -14,7 +14,7 @@ jobs:
   test-java:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os:
           - ubuntu-latest
@@ -25,9 +25,9 @@ jobs:
 
       - uses: actions/setup-java@v5
         with:
-          distribution: "zulu"
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
-          cache: "maven"
+          cache: 'maven'
 
       - run: mvn verify
         working-directory: java
