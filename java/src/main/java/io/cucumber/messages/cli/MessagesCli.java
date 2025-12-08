@@ -9,7 +9,6 @@ import picocli.CommandLine.Command;
         headerHeading = "Work with Cucumber messages",
         versionProvider = VersionProvider.class,
         subcommands = {
-                GherkinCommand.class,
                 JunitXmlCommand.class,
                 TestngXmlCommand.class
         }

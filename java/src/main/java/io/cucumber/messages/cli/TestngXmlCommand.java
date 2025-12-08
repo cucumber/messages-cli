@@ -32,7 +32,7 @@ class TestngXmlCommand implements Callable<Integer> {
     private Path source;
 
     @Option(
-            names = {"-o", "--output"},
+            names = {"--output"},
             arity = "0..1",
             paramLabel = "file",
             description = "The output file containing JUnit XML. " +
@@ -44,7 +44,7 @@ class TestngXmlCommand implements Callable<Integer> {
     private Path output;
 
     @Option(
-            names = {"-e", "--example-naming-strategy"},
+            names = {"--example-naming-strategy"},
             paramLabel = "strategy",
             description = "How to name examples. Valid values: ${COMPLETION-CANDIDATES}",
             defaultValue = "NUMBER_AND_PICKLE_IF_PARAMETERIZED"

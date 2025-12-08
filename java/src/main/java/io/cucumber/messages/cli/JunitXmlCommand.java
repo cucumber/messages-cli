@@ -2,6 +2,7 @@ package io.cucumber.messages.cli;
 
 import io.cucumber.junitxmlformatter.MessagesToJunitXmlWriter;
 import io.cucumber.messages.NdjsonToMessageIterable;
+import io.cucumber.query.NamingStrategy;
 import io.cucumber.query.NamingStrategy.ExampleName;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
@@ -32,7 +33,7 @@ class JunitXmlCommand implements Callable<Integer> {
     private Path source;
 
     @Option(
-            names = {"-o", "--output"},
+            names = {"--output"},
             arity = "0..1",
             paramLabel = "file",
             description = "The output file containing JUnit XML. " +
@@ -44,7 +45,7 @@ class JunitXmlCommand implements Callable<Integer> {
     private Path output;
 
     @Option(
-            names = {"-e", "--example-naming-strategy"},
+            names = {"--example-naming-strategy"},
             paramLabel = "strategy",
             description = "How to name examples. Valid values: ${COMPLETION-CANDIDATES}",
             defaultValue = "NUMBER_AND_PICKLE_IF_PARAMETERIZED"
@@ -60,7 +61,12 @@ class JunitXmlCommand implements Callable<Integer> {
         var options = new CommonOptions(spec, source, output, JunitXmlCommand::xml);
 
         try (var envelopes = new NdjsonToMessageIterable(options.sourceInputStream(), Jackson.deserializer());
-             var writer = new MessagesToJunitXmlWriter(exampleNameStrategy, options.outputPrintWriter())
+             var writer = MessagesToJunitXmlWriter.builder()
+                     .testNamingStrategy(NamingStrategy.strategy(NamingStrategy.Strategy.LONG)
+                             .featureName(NamingStrategy.FeatureName.EXCLUDE)
+                             .exampleName(exampleNameStrategy)
+                             .build())
+                     .build(options.outputPrintWriter())
         ) {
             for (var envelope : envelopes) {
                 writer.write(envelope);
