@@ -5,10 +5,17 @@ on:
     branches:
       - main
       - renovate/**
+    paths:
+      - java/**
+      - testdata/**
+      - .github/**
   pull_request:
     branches:
       - main
-  workflow_call:
+    paths:
+      - java/**
+      - testdata/**
+      - .github/**
 
 jobs:
   test-java:
