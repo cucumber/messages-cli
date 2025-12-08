@@ -1,8 +1,7 @@
 package io.cucumber.messages.cli;
 
+import io.cucumber.jsonformatter.MessagesToJsonWriter;
 import io.cucumber.messages.NdjsonToMessageIterable;
-import io.cucumber.query.NamingStrategy.ExampleName;
-import io.cucumber.testngxmlformatter.MessagesToTestngXmlWriter;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -14,11 +13,11 @@ import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 @Command(
-        name = "testng-xml",
-        description = "Converts Cucumber messages to TestNG XML",
+        name = "cucumber-json",
+        description = "Converts Cucumber messages to a Cucumber JSON report",
         mixinStandardHelpOptions = true
 )
-final class TestngXmlCommand implements Callable<Integer> {
+final class CucumberJsonCommand implements Callable<Integer> {
 
     @Spec
     private CommandSpec spec;
@@ -35,7 +34,7 @@ final class TestngXmlCommand implements Callable<Integer> {
             names = {"--output"},
             arity = "0..1",
             paramLabel = "file",
-            description = "The output file containing TestNG XML. " +
+            description = "The output file containing Cucumber JSON. " +
                     "If file is a directory, a new file be " +
                     "created by taking the name of the input file and " +
                     "replacing the suffix with '.xml'. If the file is omitted " +
@@ -43,24 +42,16 @@ final class TestngXmlCommand implements Callable<Integer> {
     )
     private Path output;
 
-    @Option(
-            names = {"--example-naming-strategy"},
-            paramLabel = "strategy",
-            description = "How to name examples. Valid values: ${COMPLETION-CANDIDATES}",
-            defaultValue = "NUMBER_AND_PICKLE_IF_PARAMETERIZED"
-    )
-    private ExampleName exampleNameStrategy;
-
-    private static String xml(String fileName) {
-        return fileName + ".xml";
+    private static String json(String fileName) {
+        return fileName + ".json";
     }
 
     @Override
     public Integer call() throws IOException {
-        var options = new CommonOptions(spec, source, output, TestngXmlCommand::xml);
+        var options = new CommonOptions(spec, source, output, CucumberJsonCommand::json);
 
         try (var envelopes = new NdjsonToMessageIterable(options.sourceInputStream(), Jackson.deserializer());
-             var writer = new MessagesToTestngXmlWriter(exampleNameStrategy, options.outputPrintWriter())
+             var writer = MessagesToJsonWriter.builder(Jackson.OBJECT_MAPPER::writeValue).build(options.outputPrintWriter())
         ) {
             for (var envelope : envelopes) {
                 writer.write(envelope);

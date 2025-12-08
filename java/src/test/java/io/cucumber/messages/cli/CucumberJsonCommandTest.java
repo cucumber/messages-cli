@@ -22,9 +22,10 @@ import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class GherkinCommandTest {
+class CucumberJsonCommandTest {
 
-    static final Path minimalFeature = Paths.get("../testdata/minimal.feature");
+    static final Path minimalFeatureNdjson = Paths.get("../testdata/minimal.feature.ndjson");
+    static final Path minimalFeatureXml = Paths.get("../testdata/cucumber-json/minimal.feature.json");
 
     final ByteArrayOutputStream stdOut = new ByteArrayOutputStream();
     final StringWriter stdErr = new StringWriter();
@@ -56,74 +57,71 @@ class GherkinCommandTest {
 
     @Test
     void help() {
-        int exitCode = cmd.execute("gherkin", "--help");
+        int exitCode = cmd.execute("cucumber-json", "--help");
         assertThat(exitCode).isZero();
     }
 
     @Test
     void writeToSystemOut() {
-        var exitCode = cmd.execute("gherkin", minimalFeature.toString());
+        var exitCode = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .hasLineCount(1)
-                        .startsWith("{\"gherkinDocument\":")
+                        .isEqualTo(readString(minimalFeatureXml))
         );
     }
 
     @Test
     void failsToReadNonExistingFile() {
-        var exitCode = cmd.execute("gherkin", "../testdata/no-such.feature");
+        var exitCode = cmd.execute("cucumber-json", "../testdata/no-such.feature.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
-                        .contains("Invalid argument, could not read '../testdata/no-such.feature'")
+                        .contains("Invalid argument, could not read '../testdata/no-such.feature.ndjson'")
         );
     }
 
     @Test
     void readsFromSystemIn() throws IOException {
-        System.setIn(newInputStream(minimalFeature));
-        var exitCode = cmd.execute("gherkin", "-");
+        System.setIn(newInputStream(minimalFeatureNdjson));
+        var exitCode = cmd.execute("cucumber-json", "-");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .hasLineCount(1)
-                        .startsWith("{\"gherkinDocument\":")
+                        .isEqualTo(readString(minimalFeatureXml))
         );
     }
 
     @Test
     void writesToOutputFile() {
-        var destination = tmp.resolve("minimal.feature.ndjson");
-        var exitCode = cmd.execute("gherkin", "../testdata/minimal.feature", "--output", destination.toString());
+        var destination = tmp.resolve("minimal.feature.json");
+        var exitCode = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .hasLineCount(1)
-                        .startsWith("{\"gherkinDocument\":")
+                        .isEqualTo(readString(minimalFeatureXml))
         );
     }
 
     @Test
     void doesNotOverwriteWhenWritingToDirectory() {
-        var exitCode1 = cmd.execute("gherkin", "../testdata/minimal.feature", "--output", tmp.toString());
-        var exitCode2 = cmd.execute("gherkin", "../testdata/minimal.feature", "--output", tmp.toString());
+        var exitCode1 = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
+        var exitCode2 = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
         assertAll(
                 () -> assertThat(exitCode1).isZero(),
-                () -> assertThat(tmp.resolve("minimal.ndjson")).exists(),
+                () -> assertThat(tmp.resolve("minimal.feature.json")).exists(),
                 () -> assertThat(exitCode2).isZero(),
-                () -> assertThat(tmp.resolve("minimal.1.ndjson")).exists()
+                () -> assertThat(tmp.resolve("minimal.feature.1.json")).exists()
         );
     }
 
     @Test
     void failsToWriteToReadOnlyOutputFile() throws IOException {
-        var destination = Files.createFile(tmp.resolve("minimal.feature"));
+        var destination = Files.createFile(tmp.resolve("minimal.feature.json"));
         var isReadOnly = destination.toFile().setReadOnly();
         assertThat(isReadOnly).isTrue();
 
-        var exitCode = cmd.execute("gherkin", "../testdata/minimal.feature", "--output", destination.toString());
+        var exitCode = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -134,61 +132,26 @@ class GherkinCommandTest {
 
     @Test
     void writesFileToCurrentWorkingDirectory() throws IOException {
-        var destination = Paths.get("minimal.ndjson");
+        var destination = Paths.get("minimal.feature.json");
         Files.deleteIfExists(destination);
 
-        var exitCode = cmd.execute("gherkin", "../testdata/minimal.feature", "--output");
+        var exitCode = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .hasLineCount(1)
-                        .startsWith("{\"gherkinDocument\":")
+                        .isEqualTo(readString(minimalFeatureXml))
         );
-
         Files.deleteIfExists(destination);
     }
 
     @Test
     void canNotGuessFileNameWhenReadingFromSystemIn() throws IOException {
-        System.setIn(newInputStream(minimalFeature));
-        var exitCode = cmd.execute("gherkin", "-", "--output");
+        System.setIn(newInputStream(minimalFeatureNdjson));
+        var exitCode = cmd.execute("cucumber-json", "-", "--output");
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
                         .contains("Invalid value '' for option '--output': When reading from standard input, output can not be a directory")
-        );
-    }
-
-    @Test
-    void includeSource() {
-        var exitCode = cmd.execute("gherkin", "--include-source", minimalFeature.toString());
-        assertAll(
-                () -> assertThat(exitCode).isZero(),
-                () -> assertThat(stdOut.toString())
-                        .hasLineCount(2)
-                        .startsWith("{\"source\":")
-                        .contains("{\"gherkinDocument\":")
-        );
-    }
-    @Test
-    void includePickles() {
-        var exitCode = cmd.execute("gherkin", "--include-pickles", minimalFeature.toString());
-        assertAll(
-                () -> assertThat(exitCode).isZero(),
-                () -> assertThat(stdOut.toString())
-                        .hasLineCount(2)
-                        .startsWith("{\"gherkinDocument\":")
-                        .contains("{\"pickle\":")
-        );
-    }
-    @Test
-    void excludeDocument() {
-        var exitCode = cmd.execute("gherkin", "--no-include-gherkin-document", "--include-source", minimalFeature.toString());
-        assertAll(
-                () -> assertThat(exitCode).isZero(),
-                () -> assertThat(stdOut.toString())
-                        .hasLineCount(1)
-                        .startsWith("{\"source\":")
         );
     }
 

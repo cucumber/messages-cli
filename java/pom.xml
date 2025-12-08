@@ -20,9 +20,10 @@
         <java.version>21</java.version>
         <project.build.outputTimestamp>1719064372</project.build.outputTimestamp>
         <project.Automatic-Module-Name>io.cucumber.messages.cli</project.Automatic-Module-Name>
+        
+        <cucumber-json-formatter.version>0.3.1</cucumber-json-formatter.version>
         <junit-xml-formatter.version>0.11.0</junit-xml-formatter.version>
         <testng-xml-formatter.version>0.7.0</testng-xml-formatter.version>
-        <gherkin.version>36.1.0</gherkin.version>
     </properties>
 
     <scm>
@@ -71,8 +72,8 @@
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>gherkin</artifactId>
-            <version>${gherkin.version}</version>
+            <artifactId>cucumber-json-formatter</artifactId>
+            <version>${cucumber-json-formatter.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

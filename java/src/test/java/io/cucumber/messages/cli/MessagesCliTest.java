@@ -50,7 +50,7 @@ class MessagesCliTest {
                 () -> assertThat(out.toString())
                         .hasLineCount(4)
                         .matches(Pattern.compile("""
-                                        gherkin \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
+                                        cucumber-json-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         junit-xml-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         messages-cli \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         testng-xml-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
