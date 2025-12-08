@@ -22,7 +22,7 @@ jobs:
         cache-dependency-path: testdata/compatibility-kit/package-lock.json
 
     - run: npm ci
-      working-directory: testdata
+      working-directory: testdata/compatibility-kit
 
     - name: check repository is not dirty
       run: "[[ -z $(git status --porcelain) ]]"
