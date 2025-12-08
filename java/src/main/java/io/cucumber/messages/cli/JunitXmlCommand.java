@@ -19,7 +19,7 @@ import java.util.concurrent.Callable;
         description = "Converts Cucumber messages to JUnit XML",
         mixinStandardHelpOptions = true
 )
-class JunitXmlCommand implements Callable<Integer> {
+final class JunitXmlCommand implements Callable<Integer> {
 
     @Spec
     private CommandSpec spec;

@@ -14,9 +14,9 @@ import io.cucumber.messages.NdjsonToMessageIterable;
 import io.cucumber.messages.types.Envelope;
 
 
-class Jackson {
+final class Jackson {
 
-    public static final JsonMapper OBJECT_MAPPER = JsonMapper.builder()
+    static final JsonMapper OBJECT_MAPPER = JsonMapper.builder()
             .addModule(new Jdk8Module())
             .addModule(new ParameterNamesModule(Mode.PROPERTIES))
             .serializationInclusion(Include.NON_ABSENT)

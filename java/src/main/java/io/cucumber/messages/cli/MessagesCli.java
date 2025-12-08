@@ -6,11 +6,12 @@ import picocli.CommandLine.Command;
 @Command(
         name = "messages",
         mixinStandardHelpOptions = true,
-        headerHeading = "Work with Cucumber messages",
+        headerHeading = "Work with Cucumber messages\n",
         versionProvider = VersionProvider.class,
         subcommands = {
+                CucumberJsonCommand.class,
                 JunitXmlCommand.class,
-                TestngXmlCommand.class
+                TestngXmlCommand.class,
         }
 )
 final class MessagesCli {

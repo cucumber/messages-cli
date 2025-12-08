@@ -5,7 +5,7 @@ import picocli.CommandLine.IVersionProvider;
 import java.io.IOException;
 import java.util.Properties;
 
-class VersionProvider implements IVersionProvider {
+final class VersionProvider implements IVersionProvider {
 
     @Override
     public String[] getVersion() {
