@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CucumberJsonCommandTest {
 
-    static final Path minimalFeatureNdjson = Paths.get("../testdata/minimal.feature.ndjson");
-    static final Path minimalFeatureXml = Paths.get("../testdata/cucumber-json/minimal.feature.json");
+    static final Path minimalFeatureNdjson = Paths.get("../testdata/compatibility-kit/src/minimal.ndjson");
+    static final Path minimalFeatureJson = Paths.get("../testdata/cucumber-json/minimal.json");
 
     final ByteArrayOutputStream stdOut = new ByteArrayOutputStream();
     final StringWriter stdErr = new StringWriter();
@@ -63,21 +63,21 @@ class CucumberJsonCommandTest {
 
     @Test
     void writeToSystemOut() {
-        var exitCode = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson");
+        var exitCode = cmd.execute("cucumber-json", "../testdata/compatibility-kit/src/minimal.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .isEqualTo(readString(minimalFeatureXml))
+                        .isEqualTo(readString(minimalFeatureJson))
         );
     }
 
     @Test
     void failsToReadNonExistingFile() {
-        var exitCode = cmd.execute("cucumber-json", "../testdata/no-such.feature.ndjson");
+        var exitCode = cmd.execute("cucumber-json", "../testdata/compatibility-kit/src/no-such.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
-                        .contains("Invalid argument, could not read '../testdata/no-such.feature.ndjson'")
+                        .contains("Invalid argument, could not read '../testdata/compatibility-kit/src/no-such.ndjson'")
         );
     }
 
@@ -88,40 +88,40 @@ class CucumberJsonCommandTest {
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .isEqualTo(readString(minimalFeatureXml))
+                        .isEqualTo(readString(minimalFeatureJson))
         );
     }
 
     @Test
     void writesToOutputFile() {
-        var destination = tmp.resolve("minimal.feature.json");
-        var exitCode = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
+        var destination = tmp.resolve("minimal.json");
+        var exitCode = cmd.execute("cucumber-json", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .isEqualTo(readString(minimalFeatureXml))
+                        .isEqualTo(readString(minimalFeatureJson))
         );
     }
 
     @Test
     void doesNotOverwriteWhenWritingToDirectory() {
-        var exitCode1 = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
-        var exitCode2 = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
+        var exitCode1 = cmd.execute("cucumber-json", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", tmp.toString());
+        var exitCode2 = cmd.execute("cucumber-json", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", tmp.toString());
         assertAll(
                 () -> assertThat(exitCode1).isZero(),
-                () -> assertThat(tmp.resolve("minimal.feature.json")).exists(),
+                () -> assertThat(tmp.resolve("minimal.json")).exists(),
                 () -> assertThat(exitCode2).isZero(),
-                () -> assertThat(tmp.resolve("minimal.feature.1.json")).exists()
+                () -> assertThat(tmp.resolve("minimal.1.json")).exists()
         );
     }
 
     @Test
     void failsToWriteToReadOnlyOutputFile() throws IOException {
-        var destination = Files.createFile(tmp.resolve("minimal.feature.json"));
+        var destination = Files.createFile(tmp.resolve("minimal.json"));
         var isReadOnly = destination.toFile().setReadOnly();
         assertThat(isReadOnly).isTrue();
 
-        var exitCode = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
+        var exitCode = cmd.execute("cucumber-json", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -132,14 +132,14 @@ class CucumberJsonCommandTest {
 
     @Test
     void writesFileToCurrentWorkingDirectory() throws IOException {
-        var destination = Paths.get("minimal.feature.json");
+        var destination = Paths.get("minimal.json");
         Files.deleteIfExists(destination);
 
-        var exitCode = cmd.execute("cucumber-json", "../testdata/minimal.feature.ndjson", "--output");
+        var exitCode = cmd.execute("cucumber-json", "../testdata/compatibility-kit/src/minimal.ndjson", "--output");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .isEqualTo(readString(minimalFeatureXml))
+                        .isEqualTo(readString(minimalFeatureJson))
         );
         Files.deleteIfExists(destination);
     }
