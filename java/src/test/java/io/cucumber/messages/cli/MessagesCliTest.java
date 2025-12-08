@@ -48,7 +48,7 @@ class MessagesCliTest {
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(out.toString())
-                        .hasLineCount(4)
+                        .hasLineCount(5)
                         .matches(Pattern.compile("""
                                         cucumber-json-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         html-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
