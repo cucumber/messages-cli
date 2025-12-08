@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.cfg.ConstructorDetector;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import io.cucumber.messages.MessageToNdjsonWriter;
 import io.cucumber.messages.NdjsonToMessageIterable;
 import io.cucumber.messages.types.Envelope;
 
@@ -35,7 +34,4 @@ final class Jackson {
         return json -> OBJECT_MAPPER.readValue(json, Envelope.class);
     }
 
-    public static MessageToNdjsonWriter.Serializer serializer() {
-        return OBJECT_MAPPER::writeValue;
-    }
 }
