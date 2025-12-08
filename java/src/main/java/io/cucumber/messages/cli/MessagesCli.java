@@ -10,6 +10,7 @@ import picocli.CommandLine.Command;
         versionProvider = VersionProvider.class,
         subcommands = {
                 CucumberJsonCommand.class,
+                HtmlCommand.class,
                 JunitXmlCommand.class,
                 TestngXmlCommand.class,
         }

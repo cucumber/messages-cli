@@ -51,6 +51,7 @@ class MessagesCliTest {
                         .hasLineCount(4)
                         .matches(Pattern.compile("""
                                         cucumber-json-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
+                                        html-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         junit-xml-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         messages-cli \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         testng-xml-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
