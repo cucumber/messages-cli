@@ -13,13 +13,16 @@ import io.cucumber.messages.MessageToNdjsonWriter;
 import io.cucumber.messages.NdjsonToMessageIterable;
 import io.cucumber.messages.types.Envelope;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Value.construct;
 
 final class Jackson {
 
     static final JsonMapper OBJECT_MAPPER = JsonMapper.builder()
             .addModule(new Jdk8Module())
             .addModule(new ParameterNamesModule(Mode.PROPERTIES))
-            .serializationInclusion(Include.NON_ABSENT)
+            .defaultPropertyInclusion(construct(
+                Include.NON_ABSENT,
+                Include.NON_ABSENT))
             .constructorDetector(ConstructorDetector.USE_PROPERTIES_BASED)
             .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
             .enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
