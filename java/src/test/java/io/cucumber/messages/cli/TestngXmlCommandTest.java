@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,9 +49,6 @@ class TestngXmlCommandTest {
     void cleanup() {
         System.setIn(originalSystemIn);
         System.setOut(originalSystemOut);
-        // Helps with debugging
-        System.out.println(stdOut.toString(UTF_8));
-        System.out.println(stdErr);
     }
 
     @Test

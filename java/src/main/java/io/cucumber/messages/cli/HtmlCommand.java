@@ -1,7 +1,6 @@
 package io.cucumber.messages.cli;
 
 import io.cucumber.htmlformatter.MessagesToHtmlWriter;
-import io.cucumber.jsonformatter.MessagesToJsonWriter;
 import io.cucumber.messages.NdjsonToMessageIterable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
@@ -52,7 +51,8 @@ final class HtmlCommand implements Callable<Integer> {
         var options = new CommonOptions(spec, source, output, HtmlCommand::html);
 
         try (var envelopes = new NdjsonToMessageIterable(options.sourceInputStream(), Jackson.deserializer());
-             var writer = MessagesToHtmlWriter.builder(Jackson.OBJECT_MAPPER::writeValue).build(options.outputPrintWriter())
+             var writer = MessagesToHtmlWriter.builder(Jackson.OBJECT_MAPPER::writeValue)
+                     .build(options.outputPrintWriter())
         ) {
             for (var envelope : envelopes) {
                 writer.write(envelope);
