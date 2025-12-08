@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class TestngXmlCommandTest {
 
-    static final Path minimalFeatureNdjson = Paths.get("../testdata/minimal.feature.ndjson");
-    static final Path minimalFeatureXml = Paths.get("../testdata/testng/minimal.feature.xml");
+    static final Path minimalFeatureNdjson = Paths.get("../testdata/compatibility-kit/src/minimal.ndjson");
+    static final Path minimalFeatureXml = Paths.get("../testdata/testng-xml/minimal.xml");
 
     final ByteArrayOutputStream stdOut = new ByteArrayOutputStream();
     final StringWriter stdErr = new StringWriter();
@@ -63,7 +63,7 @@ class TestngXmlCommandTest {
 
     @Test
     void writeToSystemOut() {
-        var exitCode = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson");
+        var exitCode = cmd.execute("testng-xml", "../testdata/compatibility-kit/src/minimal.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
@@ -94,8 +94,8 @@ class TestngXmlCommandTest {
 
     @Test
     void writesToOutputFile() {
-        var destination = tmp.resolve("minimal.feature.xml");
-        var exitCode = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
+        var destination = tmp.resolve("minimal.xml");
+        var exitCode = cmd.execute("testng-xml", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
@@ -105,23 +105,23 @@ class TestngXmlCommandTest {
 
     @Test
     void doesNotOverwriteWhenWritingToDirectory() {
-        var exitCode1 = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
-        var exitCode2 = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output", tmp.toString());
+        var exitCode1 = cmd.execute("testng-xml", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", tmp.toString());
+        var exitCode2 = cmd.execute("testng-xml", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", tmp.toString());
         assertAll(
                 () -> assertThat(exitCode1).isZero(),
-                () -> assertThat(tmp.resolve("minimal.feature.xml")).exists(),
+                () -> assertThat(tmp.resolve("minimal.xml")).exists(),
                 () -> assertThat(exitCode2).isZero(),
-                () -> assertThat(tmp.resolve("minimal.feature.1.xml")).exists()
+                () -> assertThat(tmp.resolve("minimal.1.xml")).exists()
         );
     }
 
     @Test
     void failsToWriteToReadOnlyOutputFile() throws IOException {
-        var destination = Files.createFile(tmp.resolve("minimal.feature.xml"));
+        var destination = Files.createFile(tmp.resolve("minimal.xml"));
         var isReadOnly = destination.toFile().setReadOnly();
         assertThat(isReadOnly).isTrue();
 
-        var exitCode = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output", destination.toString());
+        var exitCode = cmd.execute("testng-xml", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -132,10 +132,10 @@ class TestngXmlCommandTest {
 
     @Test
     void writesFileToCurrentWorkingDirectory() throws IOException {
-        var destination = Paths.get("minimal.feature.xml");
+        var destination = Paths.get("minimal.xml");
         Files.deleteIfExists(destination);
 
-        var exitCode = cmd.execute("testng-xml", "../testdata/minimal.feature.ndjson", "--output");
+        var exitCode = cmd.execute("testng-xml", "../testdata/compatibility-kit/src/minimal.ndjson", "--output");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
@@ -157,7 +157,7 @@ class TestngXmlCommandTest {
 
     @Test
     void useExampleNamingStrategy() {
-        var exitCode = cmd.execute("testng-xml", "../testdata/examples-tables.feature.ndjson", "--example-naming-strategy", "NUMBER");
+        var exitCode = cmd.execute("testng-xml", "../testdata/compatibility-kit/src/examples-tables.ndjson", "--example-naming-strategy", "NUMBER");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
