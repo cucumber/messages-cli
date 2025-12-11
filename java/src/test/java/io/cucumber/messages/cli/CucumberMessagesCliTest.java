@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class MessagesCliTest {
+class CucumberMessagesCliTest {
 
     final StringWriter out = new StringWriter();
     final StringWriter err = new StringWriter();
-    final CommandLine cmd = MessagesCli.createCommandLine();
+    final CommandLine cmd = CucumberMessagesCli.createCommandLine();
 
 
     @BeforeEach

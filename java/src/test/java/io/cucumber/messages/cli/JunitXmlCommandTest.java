@@ -37,7 +37,7 @@ class JunitXmlCommandTest {
 
     @BeforeEach
     void setup() {
-        cmd = MessagesCli.createCommandLine();
+        cmd = CucumberMessagesCli.createCommandLine();
         // TODO: Use mocking, but has wrong type. Ask pico CLI for mock with PrintStream.
         originalSystemIn = System.in;
         originalSystemOut = System.out;

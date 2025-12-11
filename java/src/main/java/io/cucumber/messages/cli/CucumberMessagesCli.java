@@ -4,7 +4,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 @Command(
-        name = "messages",
+        name = "cucumber-messages",
         mixinStandardHelpOptions = true,
         headerHeading = "Work with Cucumber messages\n",
         versionProvider = VersionProvider.class,
@@ -15,7 +15,7 @@ import picocli.CommandLine.Command;
                 TestngXmlCommand.class,
         }
 )
-final class MessagesCli {
+final class CucumberMessagesCli {
 
     public static void main(String... args) {
         var commandLine = createCommandLine();
@@ -25,6 +25,6 @@ final class MessagesCli {
 
     @SuppressWarnings("InstantiationOfUtilityClass")
     static CommandLine createCommandLine() {
-        return new CommandLine(new MessagesCli());
+        return new CommandLine(new CucumberMessagesCli());
     }
 }

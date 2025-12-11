@@ -9,10 +9,10 @@
         <version>4.5.0</version>
     </parent>
 
-    <artifactId>messages-cli</artifactId>
+    <artifactId>cucumber-messages-cli</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Messages CLI</name>
+    <name>Cucumber Messages CLI</name>
     <description>A commandline interface to work with Cucumber Messages</description>
     <url>https://github.com/cucumber/messages-cli</url>
 
@@ -20,11 +20,15 @@
         <java.version>21</java.version>
         <project.build.outputTimestamp>1719064372</project.build.outputTimestamp>
         <project.Automatic-Module-Name>io.cucumber.messages.cli</project.Automatic-Module-Name>
-        
+
         <cucumber-json-formatter.version>0.3.2</cucumber-json-formatter.version>
         <html-formatter.version>22.2.0</html-formatter.version>
         <junit-xml-formatter.version>0.11.0</junit-xml-formatter.version>
         <testng-xml-formatter.version>0.7.0</testng-xml-formatter.version>
+
+        <app.distribution.directory>${project.build.directory}/distributions/app</app.distribution.directory>
+        <app.main.class>io.cucumber.messages.cli.CucumberMessagesCli</app.main.class>
+        <app.main.id>cucumber-messages-cli</app.main.id>
     </properties>
 
     <scm>
@@ -125,9 +129,97 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>io.cucumber.messages.cli.MessagesCli</mainClass>
+                            <mainClass>${app.main.class}</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>2.1.0</version>
+                <configuration>
+                    <assembleDirectory>${project.build.directory}/app</assembleDirectory>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <repositoryName>lib</repositoryName>
+                    <programs>
+                        <program>
+                            <mainClass>${app.main.class}</mainClass>
+                            <id>${app.main.id}</id>
+                        </program>
+                    </programs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <!-- TODO: Pull up -->
+                <version>3.7.1</version>
+                <configuration>
+                    <attach>false</attach>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                    <outputDirectory>${app.distribution.directory}</outputDirectory>
+                    <workDirectory>${project.build.directory}/assembly/work</workDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jreleaser</groupId>
+                <artifactId>jreleaser-maven-plugin</artifactId>
+                <version>1.21.0</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <gitRootSearch>true</gitRootSearch>
+                    <jreleaser>
+                        <project>
+                            <java>
+                                <mainClass>${app.main.class}</mainClass>
+                            </java>
+                        </project>
+
+                        <release>
+                            <github>
+                                <enabled>false</enabled>
+                            </github>
+                        </release>
+
+                        <distributions>
+                            <app>
+                                <artifacts>
+                                    <artifact>
+                                        <path>
+                                            ${app.distribution.directory}/${project.artifactId}-${project.version}.zip
+                                        </path>
+                                    </artifact>
+                                    <artifact>
+                                        <path>
+                                            ${app.distribution.directory}/${project.artifactId}-${project.version}.tar.gz
+                                        </path>
+                                    </artifact>
+                                </artifacts>
+                            </app>
+                        </distributions>
+                    </jreleaser>
                 </configuration>
             </plugin>
         </plugins>
