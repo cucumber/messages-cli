@@ -16,7 +16,7 @@
             <outputDirectory></outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>${project.build.directory}/app</directory>
+            <directory>${project.build.directory}/app/{$project.artifactId}</directory>
             <outputDirectory></outputDirectory>
         </fileSet>
     </fileSets>

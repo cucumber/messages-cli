@@ -28,7 +28,7 @@
 
         <app.distribution.directory>${project.build.directory}/distributions/app</app.distribution.directory>
         <app.main.class>io.cucumber.messages.cli.CucumberMessagesCli</app.main.class>
-        <app.main.id>cucumber-messages-cli</app.main.id>
+
     </properties>
 
     <scm>
@@ -141,13 +141,13 @@
                 <artifactId>appassembler-maven-plugin</artifactId>
                 <version>2.1.0</version>
                 <configuration>
-                    <assembleDirectory>${project.build.directory}/app</assembleDirectory>
+                    <assembleDirectory>${project.build.directory}/app/${project.artifactId}</assembleDirectory>
                     <repositoryLayout>flat</repositoryLayout>
                     <repositoryName>lib</repositoryName>
                     <programs>
                         <program>
                             <mainClass>${app.main.class}</mainClass>
-                            <id>${app.main.id}</id>
+                            <id>cucumber-messages</id>
                         </program>
                     </programs>
                 </configuration>
