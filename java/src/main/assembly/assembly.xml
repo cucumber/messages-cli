@@ -13,9 +13,11 @@
                 <include>README*</include>
                 <include>LICENSE*</include>
             </includes>
+            <outputDirectory></outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/app</directory>
+            <outputDirectory></outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

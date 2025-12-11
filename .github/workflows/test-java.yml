@@ -1,5 +1,7 @@
 name: test-java
 
+permissions: { }
+
 on:
   push:
     branches:
@@ -36,6 +38,9 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
-      - run: mvn verify
+      - run: | 
+          mvn verify
+          # Test if the jar file works
+          ./target/app/bin/cucumber-messages-cli --help
         working-directory: java
 
