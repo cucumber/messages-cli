@@ -36,6 +36,9 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
-      - run: mvn verify
+      - run: | 
+          mvn verify
+          # Test if the jar file works
+          java -jar target/messages-cli-*-SNAPSHOT.jar  --help
         working-directory: java
 
