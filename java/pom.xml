@@ -183,45 +183,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jreleaser</groupId>
-                <artifactId>jreleaser-maven-plugin</artifactId>
-                <version>1.21.0</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <gitRootSearch>true</gitRootSearch>
-                    <jreleaser>
-                        <project>
-                            <java>
-                                <mainClass>${app.main.class}</mainClass>
-                            </java>
-                        </project>
-
-                        <release>
-                            <github>
-                                <enabled>false</enabled>
-                            </github>
-                        </release>
-
-                        <distributions>
-                            <app>
-                                <artifacts>
-                                    <artifact>
-                                        <path>
-                                            ${app.distribution.directory}/${project.artifactId}-${project.version}.zip
-                                        </path>
-                                    </artifact>
-                                    <artifact>
-                                        <path>
-                                            ${app.distribution.directory}/${project.artifactId}-${project.version}.tar.gz
-                                        </path>
-                                    </artifact>
-                                </artifacts>
-                            </app>
-                        </distributions>
-                    </jreleaser>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>
