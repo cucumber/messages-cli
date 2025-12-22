@@ -22,7 +22,7 @@
         <project.Automatic-Module-Name>io.cucumber.messages.cli</project.Automatic-Module-Name>
 
         <cucumber-json-formatter.version>0.3.2</cucumber-json-formatter.version>
-        <html-formatter.version>22.2.0</html-formatter.version>
+        <html-formatter.version>22.3.0</html-formatter.version>
         <junit-xml-formatter.version>0.11.0</junit-xml-formatter.version>
         <testng-xml-formatter.version>0.7.0</testng-xml-formatter.version>
 
