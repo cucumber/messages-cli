@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,7 +63,7 @@ class JunitXmlCommandTest {
         var exitCode = cmd.execute("junit-xml", "../testdata/compatibility-kit/src/minimal.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
-                () -> assertThat(stdOut.toString())
+                () -> assertThat(stdOut.toString(UTF_8))
                         .isEqualTo(readString(minimalFeatureXml))
         );
     }
@@ -83,7 +84,7 @@ class JunitXmlCommandTest {
         var exitCode = cmd.execute("junit-xml", "-");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
-                () -> assertThat(stdOut.toString())
+                () -> assertThat(stdOut.toString(UTF_8))
                         .isEqualTo(readString(minimalFeatureXml))
         );
     }
@@ -157,7 +158,7 @@ class JunitXmlCommandTest {
         var exitCode = cmd.execute("junit-xml", "../testdata/compatibility-kit/src/examples-tables.ndjson", "--example-naming-strategy", "NUMBER");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
-                () -> assertThat(stdOut.toString())
+                () -> assertThat(stdOut.toString(UTF_8))
                         .contains("name=\"Eating cucumbers with &lt;friends&gt; friends - #1.1\"")
         );
     }
