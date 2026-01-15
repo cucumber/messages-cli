@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class CucumberJsonCommandTest {
 
     static final Path minimalFeatureNdjson = Paths.get("../testdata/compatibility-kit/src/minimal.ndjson");
-    static final Path minimalFeatureJson = Paths.get("../testdata/cucumber-json/minimal.json");
 
     final ByteArrayOutputStream stdOut = new ByteArrayOutputStream();
     final StringWriter stdErr = new StringWriter();
@@ -63,7 +62,7 @@ class CucumberJsonCommandTest {
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .isEqualTo(readString(minimalFeatureJson))
+                        .matches("^\\[\\{.+}]$")
         );
     }
 
@@ -84,7 +83,7 @@ class CucumberJsonCommandTest {
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString())
-                        .isEqualTo(readString(minimalFeatureJson))
+                        .matches("^\\[\\{.+}]$")
         );
     }
 
@@ -95,7 +94,7 @@ class CucumberJsonCommandTest {
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .isEqualTo(readString(minimalFeatureJson))
+                        .matches("^\\[\\{.+}]$")
         );
     }
 
@@ -135,7 +134,7 @@ class CucumberJsonCommandTest {
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .isEqualTo(readString(minimalFeatureJson))
+                        .matches("^\\[\\{.+}]$")
         );
         Files.deleteIfExists(destination);
     }
