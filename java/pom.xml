@@ -11,7 +11,7 @@
 
     <artifactId>cucumber-messages-cli</artifactId>
     <version>0.1.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>jlink</packaging>
     <name>Cucumber Messages CLI</name>
     <description>A commandline interface to work with Cucumber Messages</description>
     <url>https://github.com/cucumber/messages-cli</url>
@@ -25,10 +25,6 @@
         <html-formatter.version>23.0.0-SNAPSHOT</html-formatter.version>
         <junit-xml-formatter.version>0.12.0-SNAPSHOT</junit-xml-formatter.version>
         <testng-xml-formatter.version>0.8.0-SNAPSHOT</testng-xml-formatter.version>
-
-        <app.distribution.directory>${project.build.directory}/distributions/app</app.distribution.directory>
-        <app.main.class>io.cucumber.messages.cli.CucumberMessagesCli</app.main.class>
-
     </properties>
 
     <scm>
@@ -133,64 +129,16 @@
 
         <plugins>
             <plugin>
+                <extensions>true</extensions>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-jlink-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>${app.main.class}</mainClass>
-                        </manifest>
-                    </archive>
+                    <verbose>true</verbose>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>messages-cli=io.cucumber.messages.cli/io.cucumber.messages.cli.CucumberMessagesCli</launcher>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>appassembler-maven-plugin</artifactId>
-                <version>2.1.0</version>
-                <configuration>
-                    <assembleDirectory>${project.build.directory}/app/${project.artifactId}</assembleDirectory>
-                    <repositoryLayout>flat</repositoryLayout>
-                    <repositoryName>lib</repositoryName>
-                    <programs>
-                        <program>
-                            <mainClass>${app.main.class}</mainClass>
-                            <id>cucumber-messages</id>
-                        </program>
-                    </programs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-distribution</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>assemble</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <!-- TODO: Pull up -->
-                <version>3.8.0</version>
-                <configuration>
-                    <attach>false</attach>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <descriptors>
-                        <descriptor>src/main/assembly/assembly.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>${app.distribution.directory}</outputDirectory>
-                    <workDirectory>${project.build.directory}/assembly/work</workDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-distribution</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
