@@ -24,7 +24,7 @@
         <cucumber-json-formatter.version>0.3.2</cucumber-json-formatter.version>
         <html-formatter.version>22.3.0</html-formatter.version>
         <junit-xml-formatter.version>0.11.0</junit-xml-formatter.version>
-        <testng-xml-formatter.version>0.7.0</testng-xml-formatter.version>
+        <testng-xml-formatter.version>0.8.0</testng-xml-formatter.version>
 
         <app.distribution.directory>${project.build.directory}/distributions/app</app.distribution.directory>
         <app.main.class>io.cucumber.messages.cli.CucumberMessagesCli</app.main.class>
