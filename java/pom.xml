@@ -137,7 +137,7 @@
                     <verbose>true</verbose>
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
-                    <launcher>messages-cli=io.cucumber.messages.cli/io.cucumber.messages.cli.CucumberMessagesCli</launcher>
+                    <launcher>cucumber-messages=io.cucumber.messages.cli/io.cucumber.messages.cli.CucumberMessagesCli</launcher>
                 </configuration>
             </plugin>
         </plugins>
