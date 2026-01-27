@@ -6,12 +6,12 @@
     <parent>
         <groupId>io.cucumber</groupId>
         <artifactId>cucumber-parent</artifactId>
-        <version>4.6.0</version>
+        <version>5.0.0</version>
     </parent>
 
     <artifactId>cucumber-messages-cli</artifactId>
     <version>0.1.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>jlink</packaging>
     <name>Cucumber Messages CLI</name>
     <description>A commandline interface to work with Cucumber Messages</description>
     <url>https://github.com/cucumber/messages-cli</url>
@@ -21,14 +21,10 @@
         <project.build.outputTimestamp>1765420438</project.build.outputTimestamp>
         <project.Automatic-Module-Name>io.cucumber.messages.cli</project.Automatic-Module-Name>
 
-        <cucumber-json-formatter.version>0.3.2</cucumber-json-formatter.version>
-        <html-formatter.version>22.3.0</html-formatter.version>
-        <junit-xml-formatter.version>0.11.0</junit-xml-formatter.version>
-        <testng-xml-formatter.version>0.7.0</testng-xml-formatter.version>
-
-        <app.distribution.directory>${project.build.directory}/distributions/app</app.distribution.directory>
-        <app.main.class>io.cucumber.messages.cli.CucumberMessagesCli</app.main.class>
-
+        <cucumber-json-formatter.version>0.4.0</cucumber-json-formatter.version>
+        <html-formatter.version>23.0.0</html-formatter.version>
+        <junit-xml-formatter.version>0.12.0</junit-xml-formatter.version>
+        <testng-xml-formatter.version>0.8.0</testng-xml-formatter.version>
     </properties>
 
     <scm>
@@ -52,6 +48,14 @@
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
                 <version>2.21.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-bom</artifactId>
+                <version>3.27.6</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -103,7 +107,6 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.27.7</version>
             <scope>test</scope>
         </dependency>
 
@@ -126,64 +129,16 @@
 
         <plugins>
             <plugin>
+                <extensions>true</extensions>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-jlink-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>${app.main.class}</mainClass>
-                        </manifest>
-                    </archive>
+                    <verbose>true</verbose>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>cucumber-messages=io.cucumber.messages.cli/io.cucumber.messages.cli.CucumberMessagesCli</launcher>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>appassembler-maven-plugin</artifactId>
-                <version>2.1.0</version>
-                <configuration>
-                    <assembleDirectory>${project.build.directory}/app/${project.artifactId}</assembleDirectory>
-                    <repositoryLayout>flat</repositoryLayout>
-                    <repositoryName>lib</repositoryName>
-                    <programs>
-                        <program>
-                            <mainClass>${app.main.class}</mainClass>
-                            <id>cucumber-messages</id>
-                        </program>
-                    </programs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-distribution</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>assemble</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <!-- TODO: Pull up -->
-                <version>3.8.0</version>
-                <configuration>
-                    <attach>false</attach>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <descriptors>
-                        <descriptor>src/main/assembly/assembly.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>${app.distribution.directory}</outputDirectory>
-                    <workDirectory>${project.build.directory}/assembly/work</workDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-distribution</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

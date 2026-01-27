@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,7 +62,7 @@ class CucumberHtmlCommandTest {
         var exitCode = cmd.execute("html", "../testdata/compatibility-kit/src/minimal.ndjson");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
-                () -> assertThat(stdOut.toString()).startsWith("<!DOCTYPE html>")
+                () -> assertThat(stdOut.toString(UTF_8)).startsWith("<!DOCTYPE html>")
         );
     }
 
@@ -81,7 +82,7 @@ class CucumberHtmlCommandTest {
         var exitCode = cmd.execute("html", "-");
         assertAll(
                 () -> assertThat(exitCode).isZero(),
-                () -> assertThat(stdOut.toString()).startsWith("<!DOCTYPE html>")
+                () -> assertThat(stdOut.toString(UTF_8)).startsWith("<!DOCTYPE html>")
         );
     }
 

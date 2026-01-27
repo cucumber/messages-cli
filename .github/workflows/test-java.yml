@@ -27,7 +27,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-        java: [ "21"]
+        java: [ '21']
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -41,6 +41,5 @@ jobs:
       - run: | 
           mvn verify
           # Test if the jar file works
-          ./target/app/cucumber-messages-cli/bin/cucumber-messages --help
+          ./target/maven-jlink/default/bin/cucumber-messages  --help
         working-directory: java
-
