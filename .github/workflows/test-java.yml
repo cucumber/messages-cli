@@ -41,5 +41,5 @@ jobs:
       - run: | 
           mvn verify
           # Test if the jar file works
-          ./target/app/cucumber-messages-cli/bin/cucumber-messages --help
+          ./target/maven-jlink/default/bin/messages-cli  --help
         working-directory: java
