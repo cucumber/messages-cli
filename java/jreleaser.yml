@@ -1,0 +1,27 @@
+project:
+  name: cucumber-messages-cli
+  description: Cucumber Messages CLI
+  longDescription: A commandline interface to work with Cucumber Messages
+  links:
+    homepage: https://github.com/cucumber/messages-cli
+  authors:
+    - M.P. Korstanje
+  license: MIT
+  inceptionYear: 2025
+  stereotype: CLI
+  languages:
+    java:
+      version: 17
+      groupId: io.cucumber
+      artifactId: cucumber-messages-cli
+
+assemble:
+  javaArchive:
+    cucumber-messages-cli:
+      active: ALWAYS
+      formats: [ ZIP ]
+      fileSets:
+        - input: '.'
+          includes: [ 'LICENSE' ]
+      mainJar:
+        path: target/{{distributionName}}-{{projectVersion}}.jar

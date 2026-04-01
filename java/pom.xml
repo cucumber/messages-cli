@@ -11,13 +11,11 @@
 
     <artifactId>cucumber-messages-cli</artifactId>
     <version>0.1.1-SNAPSHOT</version>
-    <packaging>jlink</packaging>
     <name>Cucumber Messages CLI</name>
     <description>A commandline interface to work with Cucumber Messages</description>
     <url>https://github.com/cucumber/messages-cli</url>
 
     <properties>
-        <java.version>21</java.version>
         <project.build.outputTimestamp>1765420438</project.build.outputTimestamp>
         <project.Automatic-Module-Name>io.cucumber.messages.cli</project.Automatic-Module-Name>
 
@@ -118,8 +116,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
-        
+
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -129,15 +126,19 @@
 
         <plugins>
             <plugin>
-                <extensions>true</extensions>
+                <groupId>org.jreleaser</groupId>
+                <artifactId>jreleaser-maven-plugin</artifactId>
+                <version>1.23.0</version>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jlink-plugin</artifactId>
-                <version>3.3.0</version>
+                <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <verbose>true</verbose>
-                    <noHeaderFiles>true</noHeaderFiles>
-                    <noManPages>true</noManPages>
-                    <launcher>cucumber-messages=io.cucumber.messages.cli/io.cucumber.messages.cli.CucumberMessagesCli</launcher>
+                    <archive>
+                        <manifest>
+                            <mainClass>io.cucumber.messages.cli.CucumberMessagesCli</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
