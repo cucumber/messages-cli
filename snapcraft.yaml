@@ -25,6 +25,7 @@ compression: lzo
 
 platforms:
   amd64:
+  arm64:
 
 apps:
   cucumber-messages:
@@ -39,12 +40,12 @@ parts:
     build-attributes:
       - network
     override-build: |
-      cd ../java
+      cd java
       # Build the application. Testing happened locally, so skip it here
       ./mvnw package -DskipTests
       cp -r target/maven-jlink/default $SNAPCRAFT_PART_INSTALL
     build-packages:
-      - openjdk-21-jdk-headless
+      - openjdk-21-jdk
 
 lint:
   ignore:
