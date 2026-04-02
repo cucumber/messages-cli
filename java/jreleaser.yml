@@ -1,5 +1,4 @@
 project:
-  version: 0.1.1
   name: cucumber-messages
   description: Cucumber Messages CLI
   longDescription: A commandline interface to work with Cucumber Messages
@@ -8,7 +7,8 @@ project:
   authors:
     - M.P. Korstanje
   license: MIT
-  inceptionYear: '2025'
+  extraProperties:
+    inceptionYear: '2025'
   stereotype: CLI
   tags:
     - 'cucumber'
@@ -24,9 +24,9 @@ project:
 
 environment:
   properties:
-    jdkPathPrefix: 'java/target/jdks'
+    jdkPathPrefix: 'target/jdks'
     jdkFilePrefix: 'jdk-21+35'
-    assemblyDir: 'java/target/jreleaser/assemble'
+    assemblyDir: 'target/jreleaser/assemble'
 
 assemble:
   jlink:
@@ -39,9 +39,9 @@ assemble:
           extraProperties:
             archiveFormat: TAR_GZ
       mainJar:
-        path: 'java/target/{{distributionName}}-cli-{{projectVersion}}.jar'
+        path: 'target/{{distributionName}}-cli-{{projectVersion}}.jar'
       jars:
-        - pattern: 'java/target/dependency/*.jar'
+        - pattern: 'target/dependency/*.jar'
       jdeps:
         multiRelease: 21
         ignoreMissingDeps: true
@@ -51,7 +51,11 @@ distributions:
     type: JLINK
     snap:
       active: ALWAYS
+      base: core
       localPlugs:
         - home
+      architectures:
+        - buildOn: [amd64]
+          runOn: [amd64]
       packageName: cucumber-messages
       remoteBuild: true

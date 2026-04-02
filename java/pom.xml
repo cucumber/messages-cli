@@ -14,6 +14,7 @@
     <name>Cucumber Messages CLI</name>
     <description>A commandline interface to work with Cucumber Messages</description>
     <url>https://github.com/cucumber/messages-cli</url>
+    <inceptionYear>2025</inceptionYear>
 
     <properties>
         <jdk.version>21</jdk.version>
@@ -199,6 +200,99 @@
                             </pkgs>
                         </configuration>
                     </plugin>
+
+<!--                    <plugin>-->
+<!--                        <groupId>org.jreleaser</groupId>-->
+<!--                        <artifactId>jreleaser-maven-plugin</artifactId>-->
+<!--                        <configuration>-->
+<!--                            <gitRootSearch>true</gitRootSearch>-->
+<!--                            <jreleaser>-->
+<!--                                <environment>-->
+<!--                                    <properties>-->
+<!--                                        <jdkFilePrefix>jdk-21+35</jdkFilePrefix>-->
+<!--                                    </properties>-->
+<!--                                </environment>-->
+<!--                                <assemble>-->
+<!--                                    <jlink>-->
+<!--                                        <cucumber-messages>-->
+<!--                                            <active>ALWAYS</active>-->
+<!--                                            <java>-->
+<!--                                                <version>${jdk.version}</version>-->
+<!--                                                <mainClass>${application.main-class}</mainClass>-->
+<!--                                                <mainModule>${application.main-module}</mainModule>-->
+<!--                                            </java>-->
+<!--                                            <targetJdks>-->
+<!--                                                <targetJdk>-->
+<!--                                                    <path>-->
+<!--                                                        ${project.build.directory}/jdks/temurin-21-linux-x86_64-musl/{{jdkFilePrefix}}-->
+<!--                                                    </path>-->
+<!--                                                    <platform>linux_musl</platform>-->
+<!--                                                </targetJdk>-->
+<!--                                                <targetJdk>-->
+<!--                                                    <path>-->
+<!--                                                        ${project.build.directory}/jdks/temurin-21-linux-x86_64/{{jdkFilePrefix}}-->
+<!--                                                    </path>-->
+<!--                                                    <platform>linux-x86_64</platform>-->
+<!--                                                </targetJdk>-->
+
+<!--                                            </targetJdks>-->
+<!--                                            <jdeps>-->
+<!--                                                <multiRelease>${jdk.version}</multiRelease>-->
+<!--                                                <ignoreMissingDeps>true</ignoreMissingDeps>-->
+<!--                                            </jdeps>-->
+<!--                                            <mainJar>-->
+<!--                                                <path>${project.build.directory}/${project.build.finalName}.jar</path>-->
+<!--                                            </mainJar>-->
+<!--                                            <jars>-->
+<!--                                                <jar>-->
+<!--                                                    <pattern>${project.build.directory}/dependency/*.jar-->
+<!--                                                    </pattern>-->
+<!--                                                </jar>-->
+<!--                                            </jars>-->
+<!--                                        </cucumber-messages>-->
+<!--                                    </jlink>-->
+<!--                                </assemble>-->
+<!--                                <packagers>-->
+
+<!--                                </packagers>-->
+<!--                                <distributions>-->
+<!--                                    <cucumber-messages>-->
+<!--                                        <type>JLINK</type>-->
+<!--                                        <stereotype>CLI</stereotype>-->
+<!--                                        <snap>-->
+<!--                                            <active>ALWAYS</active>-->
+<!--                                            <remoteBuild>false</remoteBuild>-->
+<!--                                            <base>core22</base>-->
+<!--                                            <grade>stable</grade>-->
+<!--                                            <confinement>strict</confinement>-->
+<!--                                            <commitAuthor>-->
+<!--                                                <name>cukebot</name>-->
+<!--                                                <email>cukebot@cucumber.io</email>-->
+<!--                                            </commitAuthor>-->
+<!--                                            <architectures>-->
+<!--                                                <architecture>-->
+<!--                                                    <buildOn>-->
+<!--                                                        <platform>amd64</platform>-->
+<!--                                                        <platform>arm64</platform>-->
+<!--                                                    </buildOn>-->
+<!--                                                </architecture>-->
+<!--                                            </architectures>-->
+<!--                                            <localPlugs>-->
+<!--                                                <localPlug>home</localPlug>-->
+<!--                                            </localPlugs>-->
+<!--                                        </snap>-->
+<!--                                    </cucumber-messages>-->
+<!--                                </distributions>-->
+
+<!--&lt;!&ndash;                                <release>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <github>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <enabled>false</enabled>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </github>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </release>&ndash;&gt;-->
+<!--                            </jreleaser>-->
+<!--                        </configuration>-->
+<!--                    </plugin>-->
+
                 </plugins>
             </build>
         </profile>
