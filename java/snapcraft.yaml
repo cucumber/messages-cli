@@ -1,9 +1,11 @@
 name: cucumber-messages
 title: Cucumber Messages CLI
 version: '0.1.1'
-summary: Cucumber Messages CLI
+summary: A commandline interface for working with Cucumber Messages
 description: |
-  A commandline interface to work with Cucumber Messages
+  Cucumber can output test results in newline delimited json format. This format can then be transformed into different reports. 
+  
+  This tool supports the conversion of cucumber messages into cucumber-json, html, junit-xml and testng-xml reports.
 
 license: MIT AND Apache-2.0
 
