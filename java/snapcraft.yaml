@@ -1,0 +1,52 @@
+name: cucumber-messages
+title: Cucumber Messages CLI
+version: '0.1.1'
+summary: Cucumber Messages CLI
+description: |
+  A commandline interface to work with Cucumber Messages
+
+license: MIT
+
+website: https://github.com/cucumber/messages-cli
+source-code: https://github.com/cucumber/messages-cli
+contact: https://github.com/cucumber/messages-cli
+issues: https://github.com/cucumber/messages-cli
+donation: https://opencollective.com/cucumber
+
+grade: stable
+confinement: strict
+base: core24
+type: app
+
+
+
+# Enable faster LZO compression
+compression: lzo
+
+platforms:
+  amd64:
+  arm64:
+
+apps:
+  cucumber-messages:
+    command: default/bin/cucumber-messages
+    plugs:
+      - home
+
+parts:
+  cucumber-messages:
+    plugin: nil
+    source: .
+    build-attributes:
+      - network
+    override-build: |
+      # Build the application. Testing happened locally, so skip it here
+      ./mvnw package -DskipTests
+      cp -r target/maven-jlink/default $SNAPCRAFT_PART_INSTALL
+    build-packages:
+      - openjdk-21-jdk-headless
+
+lint:
+  ignore:
+    - library:
+        - default/lib/*.so
