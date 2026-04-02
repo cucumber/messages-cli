@@ -20,8 +20,6 @@ confinement: strict
 base: core24
 type: app
 
-
-
 # Enable faster LZO compression
 compression: lzo
 
