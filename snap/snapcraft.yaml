@@ -35,7 +35,7 @@ apps:
 
 parts:
   cucumber-messages:
-    plugin: nil
+    plugin: maven
     source: .
     build-attributes:
       - network
