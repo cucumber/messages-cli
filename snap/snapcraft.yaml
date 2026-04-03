@@ -1,6 +1,7 @@
 name: cucumber-messages
 title: Cucumber Messages CLI
-version: '0.1.1'
+# read version from tag using selective-checkout
+adopt-info: cucumber-messages
 summary: A commandline interface for working with Cucumber Messages
 description: |
   Cucumber can output test results in newline delimited json format. This format can then be transformed into different reports. 
@@ -15,7 +16,6 @@ contact: https://github.com/cucumber/messages-cli
 issues: https://github.com/cucumber/messages-cli
 donation: https://opencollective.com/cucumber
 
-grade: stable
 confinement: strict
 base: core24
 type: app
@@ -36,17 +36,33 @@ apps:
 parts:
   cucumber-messages:
     plugin: nil
-    source: java
+    source: .
     build-attributes:
       - network
+    override-pull: |
+      set -o nounset
+      if ! "${SNAPCRAFT_PROJECT_DIR}/snap/selective-checkout-v3.0.3/scriptlets/selective-checkout"; then
+          printf \
+              'Error: Unable to run the selective-checkout scriptlet.\n' \
+              1>&2
+              exit 2
+      fi
     override-build: |
+      cd java
       # Build the application. Testing happened locally, so skip it here
       ./mvnw package -DskipTests
       cp -r target/maven-jlink/default $SNAPCRAFT_PART_INSTALL
     build-packages:
+      # cucumber-messages dependencies
       - mesa-libgallium
       - libllvm20
       - openjdk-21-jdk-headless
+      # selective-checkout dependencies
+      - curl
+      - jq
+      - sed
+      - git
+
 
 lint:
   ignore:
