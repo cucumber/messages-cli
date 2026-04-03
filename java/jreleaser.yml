@@ -45,21 +45,19 @@ environment:
     jdkPathPrefix: 'target/jdks'
     jdkFilePrefix: 'jdk-21+35'
     assemblyDir: 'target/jreleaser/assemble'
+    applicationName: cucumber-messages
 
 assemble:
   jlink:
+
     cucumber-messages:
       active: ALWAYS
-      # Don't include version, -SNAPSHOT makes the file names too long.
-      imageName: '{{distributionName}}'
+      imageName: '{{distributionName}}-{{projectVersion}}'
       targetJdks:
         - path: '{{jdkPathPrefix}}/temurin-21-linux-x86_64/{{jdkFilePrefix}}'
           platform: linux-x86_64
         - path: '{{jdkPathPrefix}}/temurin-21-linux-x86_64/{{jdkFilePrefix}}'
           platform: linux-x86_64
-          extraProperties:
-            # Snap does not support ZIP
-            archiveFormat: TAR_GZ
         - path: '{{jdkPathPrefix}}/temurin-21-linux-aarch64/{{jdkFilePrefix}}'
           platform: linux-aarch_64
         - path: '{{jdkPathPrefix}}/temurin-21-osx-x86_64/{{jdkFilePrefix}}/Contents/Home'
@@ -77,6 +75,29 @@ assemble:
         - "--no-header-files"
         - "--no-man-pages"
 
+    # Snap does not support ZIP, brew requires it, can't do both in one assembly.
+    cucumber-messages-snap:
+      active: ALWAYS
+      imageName: '{{distributionName}}-{{projectVersion}}'
+      executable: 'cucumber-messages'
+      archiveFormat: TAR_GZ
+      targetJdks:
+        - path: '{{jdkPathPrefix}}/temurin-21-linux-x86_64/{{jdkFilePrefix}}'
+          platform: linux-x86_64
+      mainJar:
+        path: 'target/messages-cli-{{projectVersion}}.jar'
+      jars:
+        - pattern: 'target/dependency/*.jar'
+      jdeps:
+        multiRelease: '21'
+        ignoreMissingDeps: true
+      args:
+        - "--no-header-files"
+        - "--no-man-pages"
+      options:
+        # SNAPSHOT makes the file names too long.
+        longFileMode: POSIX
+
 release:
   github:
     enabled: true
@@ -92,7 +113,17 @@ release:
 
 
 distributions:
+
   cucumber-messages:
+    type: JLINK
+    brew:
+      active: ALWAYS
+      formulaName: cucumber-messages
+      multiPlatform: true
+      repository:
+        active: RELEASE
+
+  cucumber-messages-snap:
     type: JLINK
     snap:
       active: ALWAYS
@@ -109,9 +140,3 @@ distributions:
         name: messages-cli-snap
       packageName: cucumber-messages
       remoteBuild: true
-    brew:
-      active: ALWAYS
-      formulaName: cucumber-messages
-      multiPlatform: true
-      repository:
-        active: RELEASE
