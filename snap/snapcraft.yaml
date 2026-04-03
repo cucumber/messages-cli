@@ -57,7 +57,7 @@ parts:
               exit 2
       fi
     override-build: |
-      cd "${CRAFT_PROJECT_DIR}/java"
+      cd java
       # Build the application. Testing happened locally, so skip it here
       ./mvnw package -DskipTests
       cp -r target/maven-jlink/default $SNAPCRAFT_PART_INSTALL
