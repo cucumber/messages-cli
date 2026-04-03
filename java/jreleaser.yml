@@ -48,16 +48,18 @@ environment:
 
 assemble:
   jlink:
-    messages-cli:
+    cucumber-messages:
       active: ALWAYS
-      imageName: '{{distributionName}}-{{projectVersion}}'
+      # Don't include version, -SNAPSHOT makes the file names too long.
+      imageName: '{{distributionName}}'
+      # TODO: Use https://jreleaser.org/guide/latest/reference/assemble/jlink.html
       targetJdks:
         - path: '{{jdkPathPrefix}}/temurin-21-linux-x86_64/{{jdkFilePrefix}}'
           platform: 'linux-x86_64'
           extraProperties:
             archiveFormat: TAR_GZ
       mainJar:
-        path: 'target/{{distributionName}}-{{projectVersion}}.jar'
+        path: 'target/messages-cli-{{projectVersion}}.jar'
       jars:
         - pattern: 'target/dependency/*.jar'
       jdeps:
@@ -79,11 +81,11 @@ release:
 
 
 distributions:
-  messages-cli:
+  cucumber-messages:
     type: JLINK
     snap:
       active: RELEASE
-      base: core
+      base: core20
       localPlugs:
         - home
       architectures:
