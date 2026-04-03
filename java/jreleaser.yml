@@ -25,7 +25,7 @@ project:
 
   authors:
     - M.P. Korstanje
-  license: MIT AND Apache-2.0
+  license: MIT AND Apache-2.0 AND (GPL-2.0 WITH Classpath-exception-2.0)
   inceptionYear: '2025'
   stereotype: CLI
   tags:
@@ -52,12 +52,20 @@ assemble:
       active: ALWAYS
       # Don't include version, -SNAPSHOT makes the file names too long.
       imageName: '{{distributionName}}'
-      # TODO: Use https://jreleaser.org/guide/latest/reference/assemble/jlink.html
       targetJdks:
         - path: '{{jdkPathPrefix}}/temurin-21-linux-x86_64/{{jdkFilePrefix}}'
-          platform: 'linux-x86_64'
+          platform: linux-x86_64
+        - path: '{{jdkPathPrefix}}/temurin-21-linux-x86_64/{{jdkFilePrefix}}'
+          platform: linux-x86_64
           extraProperties:
+            # Snap does not support ZIP
             archiveFormat: TAR_GZ
+        - path: '{{jdkPathPrefix}}/temurin-21-linux-aarch64/{{jdkFilePrefix}}'
+          platform: linux-aarch_64
+        - path: '{{jdkPathPrefix}}/temurin-21-osx-x86_64/{{jdkFilePrefix}}/Contents/Home'
+          platform: osx-x86_64
+        - path: '{{jdkPathPrefix}}/temurin-21-osx-aarch64/{{jdkFilePrefix}}/Contents/Home'
+          platform: osx-aarch_64
       mainJar:
         path: 'target/messages-cli-{{projectVersion}}.jar'
       jars:
@@ -87,15 +95,23 @@ distributions:
   cucumber-messages:
     type: JLINK
     snap:
-      active: RELEASE
+      active: ALWAYS
       base: core20
       localPlugs:
         - home
       architectures:
-        - buildOn: [amd64]
-          runOn: [amd64]
+        - buildOn:
+            - amd64
+          runOn:
+            - amd64
       repository:
         active: RELEASE
         name: messages-cli-snap
       packageName: cucumber-messages
       remoteBuild: true
+    brew:
+      active: ALWAYS
+      formulaName: cucumber-messages
+      multiPlatform: true
+      repository:
+        active: RELEASE

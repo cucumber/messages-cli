@@ -193,6 +193,27 @@
                                     <version>${jdk.version}</version>
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
+                                <pkg>
+                                    <name>temurin-21-linux-aarch64</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>linux-aarch64</platform>
+                                    <version>${jdk.version}</version>
+                                    <archiveType>tar.gz</archiveType>
+                                </pkg>
+                                <pkg>
+                                    <name>temurin-21-osx-x86_64</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>osx-x86_64</platform>
+                                    <version>${jdk.version}</version>
+                                    <archiveType>tar.gz</archiveType>
+                                </pkg>
+                                <pkg>
+                                    <name>temurin-21-osx-aarch64</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>osx-aarch64</platform>
+                                    <version>${jdk.version}</version>
+                                    <archiveType>tar.gz</archiveType>
+                                </pkg>
                             </pkgs>
                         </configuration>
                     </plugin>
