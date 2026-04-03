@@ -9,7 +9,11 @@ project:
     html, junit-xml and testng-xml reports.
 
   links:
-    homepage: https://github.com/cucumber/messages-cli
+    bugTracker: https://github.com/cucumber/messages-cli
+    contact: https://github.com/cucumber/messages-cli
+    homepage: https://cucumber.io/
+    donation: https://opencollective.com/cucumber
+
   authors:
     - M.P. Korstanje
   license: MIT AND Apache-2.0
