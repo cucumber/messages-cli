@@ -7,8 +7,7 @@ project:
   authors:
     - M.P. Korstanje
   license: MIT AND Apache-2.0
-  extraProperties:
-    inceptionYear: '2025'
+  inceptionYear: '2025'
   stereotype: CLI
   tags:
     - 'cucumber'
@@ -18,7 +17,7 @@ project:
     java:
       version: '21'
       groupId: io.cucumber
-      artifactId: cucumber-messages-cli
+      artifactId: messages-cli
       mainClass: io.cucumber.messages.cli.CucumberMessagesCli
       mainModule: io.cucumber.messages.cli
 
@@ -30,7 +29,7 @@ environment:
 
 assemble:
   jlink:
-    cucumber-messages:
+    messages-cli:
       active: ALWAYS
       imageName: '{{distributionName}}-{{projectVersion}}'
       targetJdks:
@@ -39,7 +38,7 @@ assemble:
           extraProperties:
             archiveFormat: TAR_GZ
       mainJar:
-        path: 'target/{{distributionName}}-cli-{{projectVersion}}.jar'
+        path: 'target/{{distributionName}}-{{projectVersion}}.jar'
       jars:
         - pattern: 'target/dependency/*.jar'
       jdeps:
@@ -61,7 +60,7 @@ release:
 
 
 distributions:
-  cucumber-messages:
+  messages-cli:
     type: JLINK
     snap:
       active: RELEASE

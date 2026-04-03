@@ -47,5 +47,5 @@ jobs:
       - name: JReleaser Assemble
         run: |
           mvn -Pjreleaser package jreleaser:assemble
-          ./target/jreleaser/assemble/messages-cli/jlink/work-linux-x86_64/io.cucumber.cucumber-messages-cli-*-SNAPSHOT-linux-x86_64/bin/messages-cli  --help
+          ./target/jreleaser/assemble/messages-cli/jlink/work-linux-x86_64/messages-cli-*-linux-x86_64/bin/messages-cli  --help
         working-directory: java
