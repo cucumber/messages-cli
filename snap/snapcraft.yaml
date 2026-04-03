@@ -58,8 +58,10 @@ parts:
       fi
     override-build: |
       cd java
-      # Build the application. Testing happened locally, so skip it here
-      ./mvnw package -DskipTests
+      # Build the application.
+      # - Testing happened locally, so skip it here
+      # - The installed maven version is old, so skip the enforcer
+      mvn package -DskipTests -Denforcer.skip=true
       cp -r target/maven-jlink/default $SNAPCRAFT_PART_INSTALL
     build-packages:
       # cucumber-messages dependencies
