@@ -1,7 +1,13 @@
 project:
-  name: cucumber-messages
-  description: Cucumber Messages CLI
-  longDescription: A commandline interface to work with Cucumber Messages
+  name: Cucumber Messages CLI
+  description: A commandline interface for working with Cucumber Messages
+  longDescription: |
+    Cucumber can output test results in newline delimited json format. This
+    format can then be transformed into different reports. 
+
+    This tool supports the conversion of cucumber messages into cucumber-json,
+    html, junit-xml and testng-xml reports.
+
   links:
     homepage: https://github.com/cucumber/messages-cli
   authors:
