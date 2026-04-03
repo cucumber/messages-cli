@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>messages-cli</artifactId>
-    <version>0.2.4-SNAPSHOT</version>
+    <version>0.2.4</version>
     <name>Cucumber Messages CLI</name>
     <description>A commandline interface to work with Cucumber Messages</description>
     <url>https://github.com/cucumber/messages-cli</url>
@@ -18,7 +18,7 @@
     <properties>
         <jdk.version>21</jdk.version>
 
-        <project.build.outputTimestamp>1775225356</project.build.outputTimestamp>
+        <project.build.outputTimestamp>1775228100</project.build.outputTimestamp>
         <project.Automatic-Module-Name>io.cucumber.messages.cli</project.Automatic-Module-Name>
 
         <cucumber-json-formatter.version>0.4.0</cucumber-json-formatter.version>
@@ -31,7 +31,7 @@
         <connection>scm:git:git://github.com/cucumber/messages-cli.git</connection>
         <developerConnection>scm:git:git@github.com:cucumber/messages-cli.git</developerConnection>
         <url>git://github.com/cucumber/messages-cli.git</url>
-        <tag>HEAD</tag>
+        <tag>v0.2.4</tag>
     </scm>
 
     <dependencyManagement>
