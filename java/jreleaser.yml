@@ -64,7 +64,7 @@ distributions:
     type: JLINK
     snap:
       active: RELEASE
-      base: core24
+      base: core
       localPlugs:
         - home
       architectures:
