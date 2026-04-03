@@ -6,7 +6,7 @@ project:
     homepage: https://github.com/cucumber/messages-cli
   authors:
     - M.P. Korstanje
-  license: MIT
+  license: MIT AND Apache-2.0
   extraProperties:
     inceptionYear: '2025'
   stereotype: CLI
@@ -43,19 +43,36 @@ assemble:
       jars:
         - pattern: 'target/dependency/*.jar'
       jdeps:
-        multiRelease: 21
+        multiRelease: '21'
         ignoreMissingDeps: true
+
+release:
+  github:
+    enabled: true
+    owner: cucumber
+    name: messages-cli
+    username: cukebot
+    skipTag: true
+    update:
+      enabled: true
+    changelog:
+      enabled: false
+
 
 distributions:
   cucumber-messages:
     type: JLINK
     snap:
-      active: ALWAYS
-      base: core
+      active: RELEASE
+      base: core24
       localPlugs:
         - home
       architectures:
         - buildOn: [amd64]
           runOn: [amd64]
-      packageName: cucumber-messages
+      repository:
+        active: RELEASE
+        name: messages-cli-snap
+        owner: cucumber
+      packageName: maven-central-search
       remoteBuild: true
