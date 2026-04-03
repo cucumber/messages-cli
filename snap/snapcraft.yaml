@@ -41,14 +41,23 @@ parts:
       - network
     override-pull: |
       set -o nounset
-      if ! "${SNAPCRAFT_PROJECT_DIR}/snap/selective-checkout-v3.0.3/scriptlets/selective-checkout"; then
+      
+      # For core22 or newer bases:
+      if ! craftctl default; then
+         printf \
+           'Error: Unable to run the default action of this step.\n' \
+           1>&2
+           exit 2
+      fi
+      
+      if ! "${CRAFT_PROJECT_DIR}/snap/selective-checkout-v3.0.3/scriptlets/selective-checkout"; then
           printf \
               'Error: Unable to run the selective-checkout scriptlet.\n' \
               1>&2
               exit 2
       fi
     override-build: |
-      cd java
+      cd "${CRAFT_PROJECT_DIR}/java"
       # Build the application. Testing happened locally, so skip it here
       ./mvnw package -DskipTests
       cp -r target/maven-jlink/default $SNAPCRAFT_PART_INSTALL
