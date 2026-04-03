@@ -9,7 +9,14 @@ Given a messages file produce a test report in one of these format:
 * [Cucumber HTML](https://github.com/cucumber/html-formatter/)
 * [Cucumber JSON](https://github.com/cucumber/cucumber-json-formatter)
 
-## Building & Installing
+## Installation
+
+### Snap
+```
+snap install cucumber-messages
+```
+
+### From source
 
 Required
 * Apache Maven 3.9.9+
