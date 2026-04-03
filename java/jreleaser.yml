@@ -51,10 +51,11 @@ release:
     enabled: true
     owner: cucumber
     name: messages-cli
-    username: cukebot
+    # Builds are triggered on tags.
     skipTag: true
     update:
       enabled: true
+    # Handled by cucumber/action-create-github-release
     changelog:
       enabled: false
 
@@ -73,6 +74,5 @@ distributions:
       repository:
         active: RELEASE
         name: messages-cli-snap
-        owner: cucumber
       packageName: cucumber-messages
       remoteBuild: true
