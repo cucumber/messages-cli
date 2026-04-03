@@ -20,3 +20,13 @@ jobs:
       - uses: cucumber/action-create-github-release@cf2c6f77ba35d2424362e83393a1c4c004cf2ddb # v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: JReleaser Assemble
+        run: mvn -Pjreleaser package jreleaser:full-release
+        working-directory: java
+        env:
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.CUKEBOT_MESSAGES_CLI_JRELEASER_TOKEN }}
+          JRELEASER_GITHUB_USERNAME: cukebot
