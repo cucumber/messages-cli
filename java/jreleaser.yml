@@ -8,11 +8,20 @@ project:
     This tool supports the conversion of cucumber messages into cucumber-json,
     html, junit-xml and testng-xml reports.
 
+  icons:
+    - url: https://cucumber.io/img/logo.svg
+      primary: true
+      width: 300
+      height: 343
+
   links:
     bugTracker: https://github.com/cucumber/messages-cli
     contact: https://github.com/cucumber/messages-cli
     homepage: https://cucumber.io/
     donation: https://opencollective.com/cucumber
+
+  maintainers:
+    - mpkorstanje
 
   authors:
     - M.P. Korstanje
