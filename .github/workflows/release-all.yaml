@@ -25,7 +25,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - name: JReleaser Assemble
-        run: mvn -Pjreleaser package jreleaser:full-release
+        run: mvn -Pjreleaser package jreleaser:assemble jreleaser:full-release
         working-directory: java
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.CUKEBOT_MESSAGES_CLI_JRELEASER_TOKEN }}
