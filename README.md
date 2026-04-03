@@ -17,7 +17,7 @@ See: `cucumber-messages --help`
 
 You can install mcs using the package manager of your choice:
 
-| Package manager | Platform | Installation                        |
-|-----------------|----------|-------------------------------------|
-| **Snap**        | 🐧       | `snap install maven-central-search` |
-| **Homebrew**    | 🍎 🐧    | `brew install mthmulders/tap/mcs`   |️
+| Package manager | Platform | Installation                                  |
+|-----------------|----------|-----------------------------------------------|
+| **Snap**        | 🐧       | `snap install cucumber-messages`              |
+| **Homebrew**    | 🍎 🐧    | `brew install cucumber/tap/cucumber-messages` |️
