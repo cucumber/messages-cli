@@ -36,16 +36,17 @@ apps:
 parts:
   cucumber-messages:
     plugin: nil
-    source: .
+    source: java
     build-attributes:
       - network
     override-build: |
-      cd java
       # Build the application. Testing happened locally, so skip it here
       ./mvnw package -DskipTests
       cp -r target/maven-jlink/default $SNAPCRAFT_PART_INSTALL
     build-packages:
-      - openjdk-21-jdk
+      - mesa-libgallium
+      - libllvm20
+      - openjdk-21-jdk-headless
 
 lint:
   ignore:
