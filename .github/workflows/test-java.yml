@@ -44,8 +44,10 @@ jobs:
         run: mvn test
         working-directory: java
 
-      - name: JReleaser Assemble
+      - name: JReleaser Assembly Test
         run: |
           mvn -Pjreleaser package jreleaser:assemble
-          ./target/jreleaser/assemble/cucumber-messages/jlink/work-linux-x86_64/cucumber-messages-linux-x86_64/bin/cucumber-messages  --help
+          ./target/jreleaser/assemble/cucumber-messages/jlink/work-linux-x86_64/cucumber-messages-linux-x86_64/bin/cucumber-messages --help
+          # Did we include the debug symbols?
+          ./target/jreleaser/assemble/cucumber-messages/jlink/work-linux-x86_64/cucumber-messages-linux-x86_64/bin/cucumber-messages cucumber-json ../testdata/compatibility-kit/src/minimal.ndjson
         working-directory: java
