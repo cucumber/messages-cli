@@ -63,6 +63,7 @@ parts:
       cp -r target/maven-jlink/default $SNAPCRAFT_PART_INSTALL
     build-packages:
       # cucumber-messages dependencies
+      - maven
       - mesa-libgallium
       - libllvm20
       - openjdk-21-jdk-headless
