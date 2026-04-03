@@ -74,5 +74,5 @@ distributions:
         active: RELEASE
         name: messages-cli-snap
         owner: cucumber
-      packageName: maven-central-search
+      packageName: cucumber-messages
       remoteBuild: true
