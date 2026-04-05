@@ -233,6 +233,12 @@
                                     <version>${maven.compiler.release}</version>
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
+                                <pkg>
+                                    <name>temurin-21-windows-x86_64</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>windows-x86_64</platform>
+                                    <version>${maven.compiler.release}</version>
+                                </pkg>
                             </pkgs>
                         </configuration>
                     </plugin>

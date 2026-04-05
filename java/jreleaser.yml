@@ -69,11 +69,15 @@ assemble:
           platform: osx-x86_64
         - path: '{{jdkPathPrefix}}/temurin-21-osx-aarch64/{{jdkFilePrefix}}/Contents/Home'
           platform: osx-aarch_64
+        - path: '{{jdkPathPrefix}}/temurin-21-windows-x86_64/{{jdkFilePrefix}}'
+          platform: windows-x86_64
       # Workaround, jreleaser generates but doesn't copy the launcher scripts
       # Custom launcher scripts are needed to follow symlinks (e.g. homebrew)
       artifacts:
         - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/cucumber-messages'
           transform: 'bin/cucumber-messages'
+        - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/cucumber-messages.bat'
+          transform: 'bin/cucumber-messages.bat'
       mainJar:
         path: 'target/messages-cli-{{projectVersion}}.jar'
       jars:
@@ -98,7 +102,6 @@ release:
     changelog:
       enabled: false
 
-
 distributions:
   cucumber-messages:
     snap:
@@ -118,4 +121,9 @@ distributions:
       multiPlatform: true
       repository:
         active: RELEASE
-
+    chocolatey:
+      active: ALWAYS
+      packageName: cucumber-messages
+      repository:
+        active: RELEASE
+      remoteBuild: true
