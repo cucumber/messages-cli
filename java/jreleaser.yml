@@ -124,6 +124,6 @@ distributions:
     chocolatey:
       active: ALWAYS
       packageName: cucumber-messages
-      repository:
+      bucket:
         active: RELEASE
       remoteBuild: true
