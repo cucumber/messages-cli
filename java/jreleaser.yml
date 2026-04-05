@@ -67,16 +67,6 @@ assemble:
       artifacts:
         - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/{{distributionName}}'
           transform: 'bin/{{distributionName}}'
-          platform: linux-x86_64
-        - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/{{distributionName}}'
-          transform: 'bin/{{distributionName}}'
-          platform: linux-aarch_64
-        - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/{{distributionName}}'
-          transform: 'bin/{{distributionName}}'
-          platform: osx-x86_64
-        - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/{{distributionName}}'
-          transform: 'bin/{{distributionName}}'
-          platform: osx-aarch_64
       mainJar:
         path: 'target/messages-cli-{{projectVersion}}.jar'
       jars:
@@ -102,7 +92,6 @@ assemble:
       artifacts:
         - path: '{{assemblyDir}}/cucumber-messages/jlink/inputs/bin/cucumber-messages'
           transform: 'bin/cucumber-messages'
-          platform: linux-x86_64
       mainJar:
         path: 'target/messages-cli-{{projectVersion}}.jar'
       jars:
