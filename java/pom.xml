@@ -171,6 +171,9 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
                     </plugin>
 
                     <plugin>
