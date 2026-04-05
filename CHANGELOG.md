@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.2.13] - 2026-04-05
 ### Fixed
 - Fix Chocolatey configuration
 
@@ -71,7 +73,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Initial release
 
-[Unreleased]: https://github.com/cucumber/messages-cli/compare/v0.2.12...HEAD
+[Unreleased]: https://github.com/cucumber/messages-cli/compare/v0.2.13...HEAD
+[0.2.13]: https://github.com/cucumber/messages-cli/compare/v0.2.12...v0.2.13
 [0.2.12]: https://github.com/cucumber/messages-cli/compare/v0.2.11...v0.2.12
 [0.2.11]: https://github.com/cucumber/messages-cli/compare/v0.2.10...v0.2.11
 [0.2.10]: https://github.com/cucumber/messages-cli/compare/v0.2.9...v0.2.10
