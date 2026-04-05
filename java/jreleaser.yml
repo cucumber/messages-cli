@@ -34,7 +34,7 @@ project:
     - 'cli'
   languages:
     java:
-      # TODO: Duplicated from pom.xml, otherwise ignored
+      # Note: Duplicated from pom.xml
       mainClass: io.cucumber.messages.cli.CucumberMessagesCli
       mainModule: io.cucumber.messages.cli
 

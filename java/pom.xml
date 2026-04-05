@@ -173,16 +173,6 @@
                         <artifactId>jreleaser-maven-plugin</artifactId>
                         <configuration>
                             <configFile>jreleaser.yml</configFile>
-                            <jreleaser>
-                                <project>
-                                    <languages>
-                                        <java>
-                                            <mainModule>${app.main-module}</mainModule>
-                                            <mainClass>${app.main-class}</mainClass>
-                                        </java>
-                                    </languages>
-                                </project>
-                            </jreleaser>
                         </configuration>
                     </plugin>
 
