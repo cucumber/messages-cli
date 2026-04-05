@@ -13,18 +13,22 @@
     <version>0.2.11-SNAPSHOT</version>
     <name>Cucumber Messages CLI</name>
     <description>A commandline interface to work with Cucumber Messages</description>
+    <inceptionYear>2025</inceptionYear>
     <url>https://github.com/cucumber/messages-cli</url>
 
     <properties>
-        <jdk.version>21</jdk.version>
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <app.main-class>io.cucumber.messages.cli.CucumberMessagesCli</app.main-class>
+        <app.main-module>io.cucumber.messages.cli</app.main-module>
 
         <project.build.outputTimestamp>1775398704</project.build.outputTimestamp>
-        <project.Automatic-Module-Name>io.cucumber.messages.cli</project.Automatic-Module-Name>
 
         <cucumber-json-formatter.version>0.4.0</cucumber-json-formatter.version>
         <html-formatter.version>23.0.0</html-formatter.version>
         <junit-xml-formatter.version>0.13.2</junit-xml-formatter.version>
         <testng-xml-formatter.version>0.8.1</testng-xml-formatter.version>
+
     </properties>
 
     <scm>
@@ -125,6 +129,7 @@
             </resource>
         </resources>
 
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -144,6 +149,17 @@
         </pluginManagement>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${app.main-class}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -157,6 +173,16 @@
                         <artifactId>jreleaser-maven-plugin</artifactId>
                         <configuration>
                             <configFile>jreleaser.yml</configFile>
+                            <jreleaser>
+                                <project>
+                                    <languages>
+                                        <java>
+                                            <mainModule>${app.main-module}</mainModule>
+                                            <mainClass>${app.main-class}</mainClass>
+                                        </java>
+                                    </languages>
+                                </project>
+                            </jreleaser>
                         </configuration>
                     </plugin>
 
@@ -193,28 +219,28 @@
                                     <name>temurin-21-linux-x86_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>linux-x86_64</platform>
-                                    <version>${jdk.version}</version>
+                                    <version>${maven.compiler.release}</version>
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
                                 <pkg>
                                     <name>temurin-21-linux-aarch64</name>
                                     <distribution>temurin</distribution>
                                     <platform>linux-aarch64</platform>
-                                    <version>${jdk.version}</version>
+                                    <version>${maven.compiler.release}</version>
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
                                 <pkg>
                                     <name>temurin-21-osx-x86_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>osx-x86_64</platform>
-                                    <version>${jdk.version}</version>
+                                    <version>${maven.compiler.release}</version>
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
                                 <pkg>
                                     <name>temurin-21-osx-aarch64</name>
                                     <distribution>temurin</distribution>
                                     <platform>osx-aarch64</platform>
-                                    <version>${jdk.version}</version>
+                                    <version>${maven.compiler.release}</version>
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
                             </pkgs>

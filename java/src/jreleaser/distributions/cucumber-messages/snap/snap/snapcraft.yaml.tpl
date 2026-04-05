@@ -1,29 +1,38 @@
-# TODO: Remove this once https://github.com/jreleaser/jreleaser/issues/2027 is released
 # {{jreleaserCreationStamp}}
 name: {{snapPackageName}}
+title: Cucumber Messages CLI
 version: "{{projectVersion}}"
 summary: {{projectDescription}}
 description: {{projectLongDescription}}
+
+license: {{projectLicense}}
+
+website: {{projectLinkHomepage}}
+source-code: {{projectLinkVcsBrowser}}
+contact: {{projectLinkContact}}
+issues: {{projectLinkBugTracker}}
+donation: {{projectLinkDonation}}
 
 grade: {{snapGrade}}
 confinement: {{snapConfinement}}
 base: {{snapBase}}
 type: app
 
-{{#snapHasArchitectures}}
-architectures:
-  {{#snapArchitectures}}
-  - build-on: {{buildOn}}
-    {{#hasRunOn}}run-on: {{runOn}}{{/hasRunOn}}
-    {{#ignoreError}}build-error: ignore{{/ignoreError}}
-  {{/snapArchitectures}}
-{{/snapHasArchitectures}}
+platforms:
+  amd64:
+    build-on:
+      - amd64
+    build-for:
+      - amd64
+  arm64:
+    build-on:
+      - arm64
+    build-for:
+      - arm64
+
 apps:
   {{distributionExecutableName}}:
     command: bin/{{distributionExecutableUnix}}
-    environment:
-      JAVA_HOME: "$SNAP/usr/lib/jvm/java-{{distributionJavaVersion}}-openjdk-${SNAP_ARCH}"
-      PATH: "$SNAP/bin:$PATH:$JAVA_HOME/bin"
     {{#snapHasLocalPlugs}}
     plugs:
       {{#snapLocalPlugs}}
@@ -84,12 +93,19 @@ parts:
     plugin: dump
     source: {{distributionUrl}}
     source-checksum: sha256/{{distributionChecksumSha256}}
-    stage-packages:
-      - curl
-      - openjdk-{{distributionJavaVersion}}-jre
-      - ca-certificates
-      - ca-certificates-java
-    organize:
-      'usr/lib/jvm/java-*': 'usr/lib/jvm/java'
-    prime:
-      - -usr/lib/jvm/java/lib/security/cacerts
+    override-build: |
+      jlink \
+        --add-modules io.cucumber.messages.cli \
+        --launcher cucumber-messages=io.cucumber.messages.cli/io.cucumber.messages.cli.CucumberMessagesCli \
+        --no-man-pages \
+        --no-header-files \
+        --module-path lib \
+        --output working-dir
+      cp -r working-dir/* $CRAFT_PART_INSTALL
+    build-packages:
+      - openjdk-{{distributionJavaVersion}}-jdk
+
+lint:
+  ignore:
+    - library:
+        - lib/*.so

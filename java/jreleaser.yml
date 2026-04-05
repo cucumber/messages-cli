@@ -1,6 +1,5 @@
 project:
   name: Cucumber Messages CLI
-  description: A commandline interface for working with Cucumber Messages
   longDescription: |
     Cucumber can output test results in newline delimited json format. This
     format can then be transformed into different reports. 
@@ -15,10 +14,11 @@ project:
       height: 343
 
   links:
-    bugTracker: https://github.com/cucumber/messages-cli
-    contact: https://github.com/cucumber/messages-cli
-    homepage: https://cucumber.io/
+    homepage: https://cucumber.io
+    contact: https://cucumber.io/community
     donation: https://opencollective.com/cucumber
+    bugTracker: https://github.com/cucumber/messages-cli
+    vcsBrowser: https://github.com/cucumber/messages-cli
 
   maintainers:
     - mpkorstanje
@@ -34,9 +34,7 @@ project:
     - 'cli'
   languages:
     java:
-      version: '21'
-      groupId: io.cucumber
-      artifactId: messages-cli
+      # TODO: Duplicated from pom.xml, otherwise ignored
       mainClass: io.cucumber.messages.cli.CucumberMessagesCli
       mainModule: io.cucumber.messages.cli
 
@@ -105,13 +103,9 @@ distributions:
   cucumber-messages:
     snap:
       active: ALWAYS
-      base: core20
+      base: core24
       localPlugs:
         - home
-      architectures:
-        - buildOn:
-            - amd64
-            - arm64
       repository:
         active: RELEASE
         name: messages-cli-snap
