@@ -48,15 +48,15 @@ jobs:
         run: mvn -Pjreleaser package jreleaser:assemble
         working-directory: java
 
-      - name: JReleaser Assembly - Test image
+      - name: JReleaser Assembly - Test Standalone
         run: |
           # Test 
-          ./target/jreleaser/assemble/cucumber-messages/jlink/work-linux-x86_64/cucumber-messages-*-linux-x86_64/bin/cucumber-messages --help
-          ./target/jreleaser/assemble/cucumber-messages/jlink/work-linux-x86_64/cucumber-messages-*-linux-x86_64/bin/cucumber-messages cucumber-json ../testdata/compatibility-kit/src/minimal.ndjson
+          ./target/jreleaser/assemble/cucumber-messages-standalone/jlink/work-linux-x86_64/cucumber-messages-*-linux-x86_64/bin/cucumber-messages --help
+          ./target/jreleaser/assemble/cucumber-messages-standalone/jlink/work-linux-x86_64/cucumber-messages-*-linux-x86_64/bin/cucumber-messages cucumber-json ../testdata/compatibility-kit/src/minimal.ndjson
         working-directory: java
 
-      - name: JReleaser Assembly - Test Snap image
+      - name: JReleaser Assembly - Test Java Binary
         run: |
-          ./target/jreleaser/assemble/cucumber-messages-snap/jlink/work-linux-x86_64/cucumber-messages-snap-*-linux-x86_64/bin/cucumber-messages --help
-          ./target/jreleaser/assemble/cucumber-messages-snap/jlink/work-linux-x86_64/cucumber-messages-snap-*-linux-x86_64/bin/cucumber-messages cucumber-json ../testdata/compatibility-kit/src/minimal.ndjson
+          ./target/jreleaser/assemble/cucumber-messages/java-archive/work/cucumber-messages-*-SNAPSHOT/bin/cucumber-messages --help
+          ./target/jreleaser/assemble/cucumber-messages/java-archive/work/cucumber-messages-*-SNAPSHOT/bin/cucumber-messages cucumber-json ../testdata/compatibility-kit/src/minimal.ndjson
         working-directory: java

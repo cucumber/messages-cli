@@ -48,11 +48,20 @@ environment:
     applicationName: cucumber-messages
 
 assemble:
-  jlink:
-
+  javaArchive:
     cucumber-messages:
       active: ALWAYS
+      formats:
+        - TAR_GZ
+      mainJar:
+        path: 'target/messages-cli-{{projectVersion}}.jar'
+      jars:
+        - pattern: 'target/dependency/*.jar'
+  jlink:
+    cucumber-messages-standalone:
+      active: ALWAYS
       imageName: '{{distributionName}}-{{projectVersion}}'
+      executable: cucumber-messages
       targetJdks:
         - path: '{{jdkPathPrefix}}/temurin-21-linux-x86_64/{{jdkFilePrefix}}'
           platform: linux-x86_64
@@ -65,32 +74,7 @@ assemble:
       # Workaround, jreleaser generates but doesn't copy the launcher scripts
       # Custom launcher scripts are needed to follow symlinks (e.g. homebrew)
       artifacts:
-        - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/{{distributionName}}'
-          transform: 'bin/{{distributionName}}'
-      mainJar:
-        path: 'target/messages-cli-{{projectVersion}}.jar'
-      jars:
-        - pattern: 'target/dependency/*.jar'
-      jdeps:
-        multiRelease: '21'
-        ignoreMissingDeps: true
-      args:
-        - "--no-header-files"
-        - "--no-man-pages"
-
-    # Snap does not support ZIP, brew requires it, can't do both in one assembly.
-    cucumber-messages-snap:
-      active: ALWAYS
-      imageName: '{{distributionName}}-{{projectVersion}}'
-      executable: 'cucumber-messages'
-      archiveFormat: TAR_GZ
-      targetJdks:
-        - path: '{{jdkPathPrefix}}/temurin-21-linux-x86_64/{{jdkFilePrefix}}'
-          platform: linux-x86_64
-      # Workaround, jreleaser generates but doesn't copy the launcher scripts
-      # Custom launcher scripts are needed to follow symlinks (e.g. homebrew)
-      artifacts:
-        - path: '{{assemblyDir}}/cucumber-messages/jlink/inputs/bin/cucumber-messages'
+        - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/cucumber-messages'
           transform: 'bin/cucumber-messages'
       mainJar:
         path: 'target/messages-cli-{{projectVersion}}.jar'
@@ -102,9 +86,6 @@ assemble:
       args:
         - "--no-header-files"
         - "--no-man-pages"
-      options:
-        # SNAPSHOT makes the file names too long for a default tar.gz file.
-        longFileMode: POSIX
 
 release:
   github:
@@ -121,18 +102,7 @@ release:
 
 
 distributions:
-
   cucumber-messages:
-    type: JLINK
-    brew:
-      active: ALWAYS
-      formulaName: cucumber-messages
-      multiPlatform: true
-      repository:
-        active: RELEASE
-
-  cucumber-messages-snap:
-    type: JLINK
     snap:
       active: ALWAYS
       base: core20
@@ -141,10 +111,17 @@ distributions:
       architectures:
         - buildOn:
             - amd64
-          runOn:
-            - amd64
+            - arm64
       repository:
         active: RELEASE
         name: messages-cli-snap
       packageName: cucumber-messages
       remoteBuild: true
+  cucumber-messages-standalone:
+    brew:
+      active: ALWAYS
+      formulaName: cucumber-messages
+      multiPlatform: true
+      repository:
+        active: RELEASE
+
