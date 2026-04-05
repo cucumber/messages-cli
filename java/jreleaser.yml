@@ -127,3 +127,8 @@ distributions:
       repository:
         active: RELEASE
       remoteBuild: true
+      skipTemplates:
+        - .github/workflows/push.yml.tpl
+        - .github/workflows/trigger.yml.tpl
+
+
