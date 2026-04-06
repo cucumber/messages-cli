@@ -128,6 +128,7 @@ distributions:
     chocolatey:
       active: ALWAYS
       packageName: cucumber-messages
+      iconUrl: https://cucumber.io/img/logo.svg
       repository:
         active: RELEASE
       remoteBuild: true
