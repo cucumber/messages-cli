@@ -103,7 +103,7 @@ parts:
         --module-path lib \
         --output working-dir
       cp -r working-dir/* $CRAFT_PART_INSTALL
-      cp bin/cucumber-messages_completion $CRAFT_PART_INSTALL
+      cp bin/cucumber-messages_completion $CRAFT_PART_INSTALL/bin
     build-packages:
       - openjdk-{{distributionJavaVersion}}-jdk
 
