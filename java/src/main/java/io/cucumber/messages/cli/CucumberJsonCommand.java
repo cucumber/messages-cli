@@ -1,7 +1,8 @@
 package io.cucumber.messages.cli;
 
 import io.cucumber.jsonformatter.MessagesToJsonWriter;
-import io.cucumber.messages.NdjsonToMessageIterable;
+import io.cucumber.messages.NdjsonToMessageReader;
+import io.cucumber.messages.types.Envelope;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -9,6 +10,7 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
@@ -50,15 +52,19 @@ final class CucumberJsonCommand implements Callable<Integer> {
     public Integer call() throws IOException {
         var options = new CommonOptions(spec, source, output, CucumberJsonCommand::json);
 
-        try (var envelopes = new NdjsonToMessageIterable(options.sourceInputStream(), Jackson.deserializer());
+        try (var reader = new NdjsonToMessageReader(options.sourceInputStream(), Jackson.deserializer());
              var writer = MessagesToJsonWriter.builder(Jackson.OBJECT_MAPPER::writeValue).build(options.outputPrintWriter())
         ) {
-            for (var envelope : envelopes) {
-                writer.write(envelope);
-            }
+            reader.lines().forEach(envelope -> write(writer, envelope));
         }
         return 0;
     }
 
-
+    private static void write(MessagesToJsonWriter writer, Envelope envelope) {
+        try {
+            writer.write(envelope);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
 }

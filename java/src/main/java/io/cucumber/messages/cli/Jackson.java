@@ -1,6 +1,5 @@
 package io.cucumber.messages.cli;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -11,8 +10,7 @@ import com.fasterxml.jackson.databind.introspect.NopAnnotationIntrospector;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import io.cucumber.messages.NdjsonToMessageIterable;
+import io.cucumber.messages.NdjsonToMessageReader;
 import io.cucumber.messages.Property;
 import io.cucumber.messages.types.Envelope;
 import org.jspecify.annotations.Nullable;
@@ -25,7 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_ABSENT;
 final class Jackson {
     static final JsonMapper OBJECT_MAPPER = JsonMapper.builder()
             .addModule(new Jdk8Module())
-            .addModule(new ParameterNamesModule(Mode.PROPERTIES))
             .addModule(new CucumberParameterNamesModule())
             .defaultPropertyInclusion(Value.construct(NON_ABSENT, NON_ABSENT))
             .constructorDetector(ConstructorDetector.USE_PROPERTIES_BASED)
@@ -37,7 +34,7 @@ final class Jackson {
             .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
             .build();
 
-    static NdjsonToMessageIterable.Deserializer deserializer() {
+    static NdjsonToMessageReader.Deserializer deserializer() {
         return json -> OBJECT_MAPPER.readValue(json, Envelope.class);
     }
 
@@ -48,6 +45,10 @@ final class Jackson {
     static final class CucumberParameterNamesModule extends SimpleModule {
         @Serial
         private static final long serialVersionUID = 1L;
+
+        CucumberParameterNamesModule() {
+            super("CucumberParameterNamesModule");
+        }
 
         @Override
         public void setupModule(SetupContext context) {
