@@ -43,7 +43,6 @@ environment:
     jdkPathPrefix: 'target/jdks'
     jdkFilePrefix: 'jdk-21+35'
     assemblyDir: 'target/jreleaser/assemble'
-    applicationName: cucumber-messages
 
 assemble:
   javaArchive:
@@ -55,6 +54,9 @@ assemble:
         path: 'target/messages-cli-{{projectVersion}}.jar'
       jars:
         - pattern: 'target/dependency/*.jar'
+      artifacts:
+        - path: 'target/messages-cli_bash_completion'
+          transform: 'bin/cucumber-messages_bash_completion'
   jlink:
     cucumber-messages-standalone:
       active: ALWAYS
@@ -78,6 +80,8 @@ assemble:
           transform: 'bin/cucumber-messages'
         - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/cucumber-messages.bat'
           transform: 'bin/cucumber-messages.bat'
+        - path: 'target/messages-cli_bash_completion'
+          transform: 'bin/cucumber-messages_bash_completion'
       mainJar:
         path: 'target/messages-cli-{{projectVersion}}.jar'
       jars:
