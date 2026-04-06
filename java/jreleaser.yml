@@ -92,6 +92,7 @@ assemble:
       args:
         - "--no-header-files"
         - "--no-man-pages"
+        - "--strip-debug"
 
 release:
   github:
