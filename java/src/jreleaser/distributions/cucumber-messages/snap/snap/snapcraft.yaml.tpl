@@ -33,7 +33,7 @@ platforms:
 apps:
   {{distributionExecutableName}}:
     command: bin/{{distributionExecutableUnix}}
-    completer: bin/{{distributionExecutableUnix}}_bash_completion
+    completer: bin/{{distributionExecutableUnix}}_completion
     {{#snapHasLocalPlugs}}
     plugs:
       {{#snapLocalPlugs}}

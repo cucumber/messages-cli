@@ -166,7 +166,7 @@
                     <mainClass>picocli.AutoComplete</mainClass>
                     <arguments>
                         <argument>--force</argument><!-- overwrite if exists -->
-                        <argument>--completionScript=${build.directory}/${artifactId}_bash_completion</argument>
+                        <argument>--completionScript=${build.directory}/${artifactId}_completion</argument>
                         <argument>${app.main-class}</argument>
                     </arguments>
                 </configuration>

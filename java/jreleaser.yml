@@ -55,8 +55,8 @@ assemble:
       jars:
         - pattern: 'target/dependency/*.jar'
       artifacts:
-        - path: 'target/messages-cli_bash_completion'
-          transform: 'bin/cucumber-messages_bash_completion'
+        - path: 'target/messages-cli_completion'
+          transform: 'bin/cucumber-messages_completion'
   jlink:
     cucumber-messages-standalone:
       active: ALWAYS
@@ -80,8 +80,8 @@ assemble:
           transform: 'bin/cucumber-messages'
         - path: '{{assemblyDir}}/{{distributionName}}/jlink/inputs/bin/cucumber-messages.bat'
           transform: 'bin/cucumber-messages.bat'
-        - path: 'target/messages-cli_bash_completion'
-          transform: 'bin/cucumber-messages_bash_completion'
+        - path: 'target/messages-cli_completion'
+          transform: 'bin/cucumber-messages_completion'
       mainJar:
         path: 'target/messages-cli-{{projectVersion}}.jar'
       jars:
