@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.cucumber</groupId>
         <artifactId>cucumber-parent</artifactId>
-        <version>5.2.0</version>
+        <version>5.3.1</version>
     </parent>
 
     <artifactId>messages-cli</artifactId>
@@ -25,7 +25,7 @@
         <project.build.outputTimestamp>1775437430</project.build.outputTimestamp>
 
         <cucumber-json-formatter.version>0.4.0</cucumber-json-formatter.version>
-        <html-formatter.version>23.0.0</html-formatter.version>
+        <html-formatter.version>23.1.0</html-formatter.version>
         <junit-xml-formatter.version>0.13.2</junit-xml-formatter.version>
         <testng-xml-formatter.version>0.8.1</testng-xml-formatter.version>
 
