@@ -96,6 +96,9 @@ assemble:
       jdeps:
         multiRelease: '21'
         ignoreMissingDeps: true
+      args:
+        - "--no-header-files"
+        - "--no-man-pages"
 
 release:
   github:
