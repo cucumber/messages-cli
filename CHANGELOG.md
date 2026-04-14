@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Optimize distribution size ([#51](https://github.com/cucumber/messages-cli/pull/51)) 
+- Add missing iconUrl for Chocolatey
+- Add list of THIRD-PARTY licenses
 
 ## [0.3.4] - 2026-04-06
 ### Fixed

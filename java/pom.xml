@@ -154,8 +154,24 @@
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-third-party</id>
+                        <goals>
+                            <goal>add-third-party</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <addOutputDirectoryAsResourceDir>false</addOutputDirectoryAsResourceDir>
+                    <outputDirectory>${project.build.directory}/license</outputDirectory>
+                    <excludedScopes>test</excludedScopes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.6.3</version>
                 <executions>
                     <execution>
                         <id>generate-completion</id>
@@ -169,7 +185,7 @@
                     <mainClass>picocli.AutoComplete</mainClass>
                     <arguments>
                         <argument>--force</argument><!-- overwrite if exists -->
-                        <argument>--completionScript=${build.directory}/${artifactId}_completion</argument>
+                        <argument>--completionScript=${project.build.directory}/${project.artifactId}_completion</argument>
                         <argument>${app.main-class}</argument>
                     </arguments>
                 </configuration>
@@ -212,9 +228,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <includeScope>runtime</includeScope>
-                        </configuration>
                     </plugin>
 
                     <plugin>
