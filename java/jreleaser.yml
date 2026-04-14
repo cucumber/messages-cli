@@ -96,10 +96,6 @@ assemble:
       jdeps:
         multiRelease: '21'
         ignoreMissingDeps: true
-      args:
-        - "--no-header-files"
-        - "--no-man-pages"
-        - "--strip-debug"
 
 release:
   github:
