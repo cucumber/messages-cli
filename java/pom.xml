@@ -75,6 +75,12 @@
 
         <dependency>
             <groupId>io.cucumber</groupId>
+            <artifactId>messages</artifactId>
+            <version>[32.3.1,33.0.0)</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
             <artifactId>html-formatter</artifactId>
             <version>${html-formatter.version}</version>
         </dependency>
@@ -94,6 +100,7 @@
             <artifactId>cucumber-json-formatter</artifactId>
             <version>${cucumber-json-formatter.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -102,10 +109,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jdk8</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-parameter-names</artifactId>
         </dependency>
 
         <dependency>

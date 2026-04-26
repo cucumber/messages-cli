@@ -45,7 +45,7 @@ jobs:
         working-directory: java
 
       - name: JReleaser Assembly - Build
-        run: mvn -Pjreleaser package jreleaser:assemble
+        run: mvn -Pjreleaser package jreleaser:assemble --batch-mode -D"style.color=always" --show-version
         working-directory: java
 
       - name: JReleaser Assembly - Test Standalone

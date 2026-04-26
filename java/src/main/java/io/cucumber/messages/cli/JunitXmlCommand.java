@@ -1,7 +1,8 @@
 package io.cucumber.messages.cli;
 
 import io.cucumber.junitxmlformatter.MessagesToJunitXmlWriter;
-import io.cucumber.messages.NdjsonToMessageIterable;
+import io.cucumber.messages.NdjsonToMessageReader;
+import io.cucumber.messages.types.Envelope;
 import io.cucumber.query.NamingStrategy;
 import io.cucumber.query.NamingStrategy.ExampleName;
 import picocli.CommandLine.Command;
@@ -11,6 +12,7 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
@@ -60,7 +62,7 @@ final class JunitXmlCommand implements Callable<Integer> {
     public Integer call() throws IOException {
         var options = new CommonOptions(spec, source, output, JunitXmlCommand::xml);
 
-        try (var envelopes = new NdjsonToMessageIterable(options.sourceInputStream(), Jackson.deserializer());
+        try (var reader = new NdjsonToMessageReader(options.sourceInputStream(), Jackson.deserializer());
              var writer = MessagesToJunitXmlWriter.builder()
                      .testNamingStrategy(NamingStrategy.strategy(NamingStrategy.Strategy.LONG)
                              .featureName(NamingStrategy.FeatureName.EXCLUDE)
@@ -68,12 +70,16 @@ final class JunitXmlCommand implements Callable<Integer> {
                              .build())
                      .build(options.outputPrintWriter())
         ) {
-            for (var envelope : envelopes) {
-                writer.write(envelope);
-            }
+            reader.lines().forEach(envelope -> write(writer, envelope));
         }
         return 0;
     }
 
-
+    private static void write(MessagesToJunitXmlWriter writer, Envelope envelope) {
+        try {
+            writer.write(envelope);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
 }
