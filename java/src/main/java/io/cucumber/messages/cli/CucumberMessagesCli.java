@@ -12,10 +12,14 @@ import picocli.CommandLine.Command;
                 CucumberJsonCommand.class,
                 HtmlCommand.class,
                 JunitXmlCommand.class,
-                TestngXmlCommand.class,
+                TestngXmlCommand.class
         }
 )
 final class CucumberMessagesCli {
+
+    private CucumberMessagesCli(){
+        /* no-op */
+    }
 
     public static void main(String... args) {
         var commandLine = createCommandLine();

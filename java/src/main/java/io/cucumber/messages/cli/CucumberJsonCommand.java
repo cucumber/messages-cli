@@ -1,7 +1,8 @@
 package io.cucumber.messages.cli;
 
+import io.cucumber.jsonformatter.CucumberJvmJson.JvmFeature;
 import io.cucumber.jsonformatter.MessagesToJsonWriter;
-import io.cucumber.messages.NdjsonToMessageIterable;
+import io.cucumber.messages.NdjsonToMessageReader;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -9,8 +10,12 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
+
+import static io.cucumber.messages.cli.JsonUtil.deserializer;
+import static io.cucumber.messages.cli.JsonUtil.serializer;
 
 @Command(
         name = "cucumber-json",
@@ -31,7 +36,7 @@ final class CucumberJsonCommand implements Callable<Integer> {
     private Path source;
 
     @Option(
-            names = {"--output"},
+            names = "--output",
             arity = "0..1",
             paramLabel = "file",
             description = "The output file containing Cucumber JSON. " +
@@ -49,13 +54,17 @@ final class CucumberJsonCommand implements Callable<Integer> {
     @Override
     public Integer call() throws IOException {
         var options = new CommonOptions(spec, source, output, CucumberJsonCommand::json);
-
-        try (var envelopes = new NdjsonToMessageIterable(options.sourceInputStream(), Jackson.deserializer());
-             var writer = MessagesToJsonWriter.builder(Jackson.OBJECT_MAPPER::writeValue).build(options.outputPrintWriter())
+        try (var reader = new NdjsonToMessageReader(options.sourceInputStream(), deserializer());
+             var writer = MessagesToJsonWriter.builder(serializer(JvmFeature[].class)::writeValue)
+                     .build(options.outputPrintWriter())
         ) {
-            for (var envelope : envelopes) {
-                writer.write(envelope);
-            }
+            reader.lines().forEach(envelope -> {
+                try {
+                    writer.write(envelope);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
         }
         return 0;
     }

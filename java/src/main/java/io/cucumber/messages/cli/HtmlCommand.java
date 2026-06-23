@@ -1,7 +1,8 @@
 package io.cucumber.messages.cli;
 
 import io.cucumber.htmlformatter.MessagesToHtmlWriter;
-import io.cucumber.messages.NdjsonToMessageIterable;
+import io.cucumber.messages.NdjsonToMessageReader;
+import io.cucumber.messages.types.Envelope;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -9,8 +10,12 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
+
+import static io.cucumber.messages.cli.JsonUtil.deserializer;
+import static io.cucumber.messages.cli.JsonUtil.serializer;
 
 @Command(
         name = "html",
@@ -31,7 +36,7 @@ final class HtmlCommand implements Callable<Integer> {
     private Path source;
 
     @Option(
-            names = {"--output"},
+            names = "--output",
             arity = "0..1",
             paramLabel = "file",
             description = "The output file containing the HTML report. " +
@@ -50,13 +55,17 @@ final class HtmlCommand implements Callable<Integer> {
     public Integer call() throws IOException {
         var options = new CommonOptions(spec, source, output, HtmlCommand::html);
 
-        try (var envelopes = new NdjsonToMessageIterable(options.sourceInputStream(), Jackson.deserializer());
-             var writer = MessagesToHtmlWriter.builder(Jackson.OBJECT_MAPPER::writeValue)
+        try (var reader = new NdjsonToMessageReader(options.sourceInputStream(), deserializer());
+             var writer = MessagesToHtmlWriter.builder(serializer(Envelope.class)::writeValue)
                      .build(options.outputPrintWriter())
         ) {
-            for (var envelope : envelopes) {
-                writer.write(envelope);
-            }
+            reader.lines().forEach(envelope -> {
+                try {
+                    writer.write(envelope);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
         }
         return 0;
     }
