@@ -25,7 +25,7 @@
         <project.build.outputTimestamp>1775437430</project.build.outputTimestamp>
 
         <cucumber-json-formatter.version>0.4.1</cucumber-json-formatter.version>
-        <html-formatter.version>24.0.0</html-formatter.version>
+        <html-formatter.version>24.1.0</html-formatter.version>
         <junit-xml-formatter.version>0.14.0</junit-xml-formatter.version>
         <messages.version>34.0.2</messages.version>
         <messages-ndjson.version>0.5.1</messages-ndjson.version>
