@@ -27,7 +27,7 @@
         <cucumber-json-formatter.version>0.4.1</cucumber-json-formatter.version>
         <html-formatter.version>24.1.0</html-formatter.version>
         <junit-xml-formatter.version>0.14.0</junit-xml-formatter.version>
-        <messages.version>34.1.0</messages.version>
+        <messages.version>34.2.0</messages.version>
         <messages-ndjson.version>0.5.1</messages-ndjson.version>
         <testng-xml-formatter.version>0.8.1</testng-xml-formatter.version>
 
