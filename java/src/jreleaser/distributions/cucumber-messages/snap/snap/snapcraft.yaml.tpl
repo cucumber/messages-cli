@@ -100,6 +100,7 @@ parts:
         --launcher cucumber-messages=io.cucumber.messages.cli/io.cucumber.messages.cli.CucumberMessagesCli \
         --no-man-pages \
         --no-header-files \
+        --strip-debug \
         --module-path lib \
         --output working-dir
       cp -r working-dir/* $CRAFT_PART_INSTALL
