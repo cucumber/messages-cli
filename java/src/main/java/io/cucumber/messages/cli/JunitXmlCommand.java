@@ -44,7 +44,7 @@ final class JunitXmlCommand implements Callable<Integer> {
             arity = "0..1",
             paramLabel = "file",
             description = "The output file containing JUnit XML. " +
-                    "If file is a directory, a new file be " +
+                    "If file is a directory, a new file will be " +
                     "created by taking the name of the input file and " +
                     "replacing the suffix with '.xml'. If the file is omitted " +
                     "the current working directory is used."

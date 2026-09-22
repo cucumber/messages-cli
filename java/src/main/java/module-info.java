@@ -10,6 +10,7 @@ module io.cucumber.messages.cli {
     requires org.jspecify;
     requires io.cucumber.messages.ndjson;
     requires tools.jackson.databind;
+    requires io.cucumber.prettyformatter;
 
     opens io.cucumber.messages.cli to info.picocli;
 
