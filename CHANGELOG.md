@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Strip debug symbols to optimize distribution size ([#41](https://github.com/cucumber/messages-cli/pull/65))
 
 ## [0.3.5] - 2026-09-23
 ### Changed
