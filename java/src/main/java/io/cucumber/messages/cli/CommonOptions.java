@@ -1,5 +1,6 @@
 package io.cucumber.messages.cli;
 
+import org.jspecify.annotations.Nullable;
 import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 
@@ -18,11 +19,11 @@ import static java.util.Objects.requireNonNull;
 final class CommonOptions {
     private final CommandSpec spec;
     private final Path source;
-    private final Path output;
+    private final @Nullable Path output;
     private final Function<String, String> fileNameGenerator;
 
 
-    CommonOptions(CommandSpec spec, Path source, Path output, Function<String, String> fileNameGenerator) {
+    CommonOptions(CommandSpec spec, Path source, @Nullable Path output, Function<String, String> fileNameGenerator) {
         this.spec = requireNonNull(spec);
         this.source = requireNonNull(source);
         this.output = output;
@@ -61,13 +62,13 @@ final class CommonOptions {
         } catch (IOException e) {
             throw new CommandLine.ParameterException(
                     spec.commandLine(),
-                    ("Invalid value '%s' for option '--output': Could not " +
-                            "write to '%s'"
-                    ).formatted(output, path), e);
+                    "Invalid value '%s' for option '--output': Could not write to '%s'"
+                            .formatted(output, path), e);
         }
     }
 
     private Path outputPath() {
+        requireNonNull(output);
         if (!isDestinationDirectory()) {
             return output;
         }

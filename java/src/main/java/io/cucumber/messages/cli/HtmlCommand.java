@@ -3,6 +3,7 @@ package io.cucumber.messages.cli;
 import io.cucumber.htmlformatter.MessagesToHtmlWriter;
 import io.cucumber.messages.NdjsonToMessageReader;
 import io.cucumber.messages.types.Envelope;
+import org.jspecify.annotations.Nullable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -45,7 +46,7 @@ final class HtmlCommand implements Callable<Integer> {
                     "replacing the suffix with '.html'. If the file is omitted " +
                     "the current working directory is used."
     )
-    private Path output;
+    private @Nullable Path output;
 
     private static String html(String fileName) {
         return fileName + ".html";
@@ -56,18 +57,21 @@ final class HtmlCommand implements Callable<Integer> {
         var options = new CommonOptions(spec, source, output, HtmlCommand::html);
 
         try (var reader = new NdjsonToMessageReader(options.sourceInputStream(), deserializer());
-             var writer = MessagesToHtmlWriter.builder(serializer(Envelope.class)::writeValue)
+             var writer = MessagesToHtmlWriter
+                     .builder(serializer(Envelope.class)::writeValue)
                      .build(options.outputPrintWriter())
         ) {
-            reader.lines().forEach(envelope -> {
-                try {
-                    writer.write(envelope);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            });
+            reader.lines().forEach(envelope -> writeTo(writer, envelope));
         }
         return 0;
+    }
+
+    private static void writeTo(MessagesToHtmlWriter writer, Envelope envelope) {
+        try {
+            writer.write(envelope);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
 
