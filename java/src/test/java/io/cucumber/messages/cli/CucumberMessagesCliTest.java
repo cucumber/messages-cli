@@ -36,14 +36,16 @@ class CucumberMessagesCliTest {
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(out.toString())
-                        .hasLineCount(7)
+                        .hasLineCount(9)
                         .matches(Pattern.compile("""
                                         cucumber-json-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         html-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
+                                        jackson \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         junit-xml-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         messages \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         messages-cli \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         messages-ndjson \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
+                                        pretty-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         testng-xml-formatter \\d+\\.\\d+\\.\\d+(-SNAPSHOT)?
                                         """,
                                 Pattern.MULTILINE

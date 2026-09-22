@@ -12,6 +12,7 @@ import picocli.CommandLine.Command;
                 CucumberJsonCommand.class,
                 HtmlCommand.class,
                 JunitXmlCommand.class,
+                PrettyCommand.class,
                 TestngXmlCommand.class
         }
 )

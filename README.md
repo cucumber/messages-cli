@@ -6,6 +6,7 @@ Given a messages file produce a test report in one of these formats:
 
 * [JUnit XML](https://github.com/cucumber/junit-xml-formatter)
 * [TestNG XML](https://github.com/cucumber/testng-xml-formatter)
+* [Pretty](https://github.com/cucumber/pretty-formatter)
 * [Cucumber HTML](https://github.com/cucumber/html-formatter/)
 * [Cucumber JSON](https://github.com/cucumber/cucumber-json-formatter)
 

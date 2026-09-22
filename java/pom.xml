@@ -26,9 +26,11 @@
 
         <cucumber-json-formatter.version>0.4.1</cucumber-json-formatter.version>
         <html-formatter.version>24.1.1</html-formatter.version>
+        <jackson.version>3.2.3</jackson.version>
         <junit-xml-formatter.version>0.15.0</junit-xml-formatter.version>
         <messages.version>34.2.1</messages.version>
         <messages-ndjson.version>0.5.2</messages-ndjson.version>
+        <pretty-formatter.version>4.0.2</pretty-formatter.version>
         <testng-xml-formatter.version>0.9.0</testng-xml-formatter.version>
 
     </properties>
@@ -53,7 +55,7 @@
             <dependency>
                 <groupId>tools.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>3.2.3</version>
+                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -74,22 +76,20 @@
             <artifactId>picocli</artifactId>
             <version>4.7.7</version>
         </dependency>
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>html-formatter</artifactId>
             <version>${html-formatter.version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>junit-xml-formatter</artifactId>
             <version>${junit-xml-formatter.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>testng-xml-formatter</artifactId>
-            <version>${testng-xml-formatter.version}</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
@@ -107,8 +107,14 @@
             <version>${messages.version}</version>
         </dependency>
         <dependency>
-            <groupId>tools.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>io.cucumber</groupId>
+            <artifactId>pretty-formatter</artifactId>
+            <version>${pretty-formatter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>testng-xml-formatter</artifactId>
+            <version>${testng-xml-formatter.version}</version>
         </dependency>
 
         <dependency>
@@ -116,7 +122,6 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
