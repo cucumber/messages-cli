@@ -15,13 +15,13 @@ See: `cucumber-messages --help`
 
 ## Installation
 
-You can install messages-cli using the package manager of your choice:
+You can install `messages-cli` using the package manager of your choice:
 
-| Package manager | Platform | Installation                                  | Completions |
-|-----------------|----------|-----------------------------------------------|-------------|
-| **Snap**        | 🐧       | `snap install cucumber-messages`              | Bash / Zsh  |
-| **Homebrew**    | 🍎 🐧    | `brew install cucumber/tap/cucumber-messages` | ️           |
-| **Chocolatey**  | 🪟       | `choco install cucumber-messages`             |             |
+| Package manager                                                               | Platform | Installation                                  | Completions |
+|-------------------------------------------------------------------------------|----------|-----------------------------------------------|-------------|
+| **[Snap](https://snapcraft.io/cucumber-messages)**                            | 🐧       | `snap install cucumber-messages`              | Bash / Zsh  |
+| **[Homebrew](https://github.com/cucumber/homebrew-tap)**                      | 🍎 🐧    | `brew install cucumber/tap/cucumber-messages` | ️            |
+| **[Chocolatey](https://community.chocolatey.org/packages/cucumber-messages)** | 🪟       | `choco install cucumber-messages`             |             |
 
 The application ships with a completions file for bash and zsh. They're
 automatically enabled when installed through Snap. Please let me know if you
