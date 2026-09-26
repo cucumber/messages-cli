@@ -22,9 +22,10 @@ import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class CucumberPrettyCommandTest {
+class CucumberExternalizeAttachmentsCommandTest {
 
-    static final Path minimalFeatureNdjson = Paths.get("../testdata/compatibility-kit/src/minimal.ndjson");
+    static final String attachmentsFeatureNdjson = "../testdata/compatibility-kit/src/minimal.ndjson";
+    static final Path attachmentsFeatureNdjsonPath = Paths.get(attachmentsFeatureNdjson);
 
     final ByteArrayOutputStream stdOut = new ByteArrayOutputStream();
     final StringWriter stdErr = new StringWriter();
@@ -34,15 +35,18 @@ class CucumberPrettyCommandTest {
 
     @TempDir
     Path tmp;
+    Path outputDirectory;
 
     @BeforeEach
-    void setup() {
+    void setup() throws Exception {
         cmd = CucumberMessagesCli.createCommandLine();
         // TODO: Use mocking, but has wrong type. Ask pico CLI for mock with PrintStream.
         originalSystemIn = System.in;
         originalSystemOut = System.out;
         System.setOut(new PrintStream(stdOut));
         cmd.setErr(new PrintWriter(stdErr));
+        outputDirectory = tmp.resolve("output-directory");
+        Files.createDirectory(outputDirectory);
     }
 
     @AfterEach
@@ -53,23 +57,23 @@ class CucumberPrettyCommandTest {
 
     @Test
     void help() {
-        int exitCode = cmd.execute("pretty", "--help");
+        int exitCode = cmd.execute("externalize-attachments", "--help");
         assertThat(exitCode).isZero();
     }
 
     @Test
     void writeToSystemOut() {
-        var exitCode = cmd.execute("pretty", "../testdata/compatibility-kit/src/minimal.ndjson");
+        var exitCode = cmd.execute("externalize-attachments", attachmentsFeatureNdjson,  "--output-directory", outputDirectory.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString(UTF_8))
-                        .startsWith("\nFeature: minimal")
+                        .matches("^\\{.+}$")
         );
     }
 
     @Test
     void failsToReadNonExistingFile() {
-        var exitCode = cmd.execute("pretty", "../testdata/compatibility-kit/src/no-such.ndjson");
+        var exitCode = cmd.execute("externalize-attachments", "../testdata/compatibility-kit/src/no-such.ndjson", "--output-directory", outputDirectory.toString());
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -79,45 +83,45 @@ class CucumberPrettyCommandTest {
 
     @Test
     void readsFromSystemIn() throws IOException {
-        System.setIn(newInputStream(minimalFeatureNdjson));
-        var exitCode = cmd.execute("pretty", "-");
+        System.setIn(newInputStream(attachmentsFeatureNdjsonPath));
+        var exitCode = cmd.execute("externalize-attachments", "-", "--output-directory", outputDirectory.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(stdOut.toString(UTF_8))
-                        .startsWith("\nFeature: minimal")
+                        .matches("^\\{.+}$")
         );
     }
 
     @Test
     void writesToOutputFile() {
-        var destination = tmp.resolve("minimal.log");
-        var exitCode = cmd.execute("pretty", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", destination.toString());
+        var destination = tmp.resolve("attachments.externalized.json");
+        var exitCode = cmd.execute("externalize-attachments", attachmentsFeatureNdjson, "--output", destination.toString(), "--output-directory", outputDirectory.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
-                        .startsWith("\nFeature: minimal")
+                        .matches("^\\{.+}$")
         );
     }
 
     @Test
     void doesNotOverwriteWhenWritingToDirectory() {
-        var exitCode1 = cmd.execute("pretty", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", tmp.toString());
-        var exitCode2 = cmd.execute("pretty", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", tmp.toString());
+        var exitCode1 = cmd.execute("externalize-attachments", attachmentsFeatureNdjson, "--output", tmp.toString(), "--output-directory", outputDirectory.toString());
+        var exitCode2 = cmd.execute("externalize-attachments", attachmentsFeatureNdjson, "--output", tmp.toString(), "--output-directory", outputDirectory.toString());
         assertAll(
                 () -> assertThat(exitCode1).isZero(),
-                () -> assertThat(tmp.resolve("minimal.log")).exists(),
+                () -> assertThat(tmp.resolve("attachments.ndjson")).exists(),
                 () -> assertThat(exitCode2).isZero(),
-                () -> assertThat(tmp.resolve("minimal.1.log")).exists()
+                () -> assertThat(tmp.resolve("attachments.1.ndjson")).exists()
         );
     }
 
     @Test
     void failsToWriteToReadOnlyOutputFile() throws IOException {
-        var destination = Files.createFile(tmp.resolve("minimal.log"));
+        var destination = Files.createFile(tmp.resolve("attachments.ndjson"));
         var isReadOnly = destination.toFile().setReadOnly();
         assertThat(isReadOnly).isTrue();
 
-        var exitCode = cmd.execute("pretty", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", destination.toString());
+        var exitCode = cmd.execute("externalize-attachments", attachmentsFeatureNdjson, "--output", destination.toString(), "--output-directory", outputDirectory.toString());
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
@@ -131,7 +135,7 @@ class CucumberPrettyCommandTest {
         var destination = Paths.get("minimal.log");
         Files.deleteIfExists(destination);
 
-        var exitCode = cmd.execute("pretty", "../testdata/compatibility-kit/src/minimal.ndjson", "--output");
+        var exitCode = cmd.execute("externalize-attachments", attachmentsFeatureNdjson, "--output", "--output-directory", outputDirectory.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
                 () -> assertThat(readString(destination))
@@ -142,8 +146,8 @@ class CucumberPrettyCommandTest {
 
     @Test
     void canNotGuessFileNameWhenReadingFromSystemIn() throws IOException {
-        System.setIn(newInputStream(minimalFeatureNdjson));
-        var exitCode = cmd.execute("pretty", "-", "--output");
+        System.setIn(newInputStream(attachmentsFeatureNdjsonPath));
+        var exitCode = cmd.execute("externalize-attachments", "-", "--output", "--output-directory", outputDirectory.toString());
         assertAll(
                 () -> assertThat(exitCode).isEqualTo(2),
                 () -> assertThat(stdErr.toString())
