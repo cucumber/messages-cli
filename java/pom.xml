@@ -24,13 +24,13 @@
 
         <project.build.outputTimestamp>1790115022</project.build.outputTimestamp>
 
-        <cucumber-json-formatter.version>0.4.1</cucumber-json-formatter.version>
-        <html-formatter.version>24.1.1</html-formatter.version>
+        <cucumber-json-formatter.version>0.4.2</cucumber-json-formatter.version>
+        <html-formatter.version>24.2.0</html-formatter.version>
         <jackson.version>3.2.3</jackson.version>
         <junit-xml-formatter.version>0.15.0</junit-xml-formatter.version>
         <messages.version>34.2.1</messages.version>
         <messages-ndjson.version>0.5.2</messages-ndjson.version>
-        <pretty-formatter.version>4.0.2</pretty-formatter.version>
+        <pretty-formatter.version>4.1.0</pretty-formatter.version>
         <testng-xml-formatter.version>0.9.0</testng-xml-formatter.version>
 
     </properties>
