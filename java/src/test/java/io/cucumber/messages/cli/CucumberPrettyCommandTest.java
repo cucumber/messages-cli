@@ -90,7 +90,7 @@ class CucumberPrettyCommandTest {
 
     @Test
     void writesToOutputFile() {
-        var destination = tmp.resolve("minimal.json");
+        var destination = tmp.resolve("minimal.log");
         var exitCode = cmd.execute("pretty", "../testdata/compatibility-kit/src/minimal.ndjson", "--output", destination.toString());
         assertAll(
                 () -> assertThat(exitCode).isZero(),
